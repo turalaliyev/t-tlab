@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { HiArrowRight, HiGlobeAlt } from 'react-icons/hi2';
 import { HiMail, HiShare } from 'react-icons/hi';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/translations';
 
 const Contact = () => {
+  const { language } = useLanguage();
+  const t = translations[language] || translations.en;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,31 +35,30 @@ const Contact = () => {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Left Column - Contact Info */}
           <div>
-            <p className="text-sm text-accent-primary font-medium mb-2">CONNECT</p>
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">Get in touch with the Lab.</h1>
+            <p className="text-sm text-accent-primary font-medium mb-2">{t.contact.connect}</p>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">{t.contact.title}</h1>
             <p className="text-gray-300 mb-12">
-              We're ready to engineer your next digital breakthrough. Reach out through any of these 
-              channels or use the form.
+              {t.contact.description}
             </p>
 
             <div className="space-y-8">
               <div>
-                <p className="text-sm text-accent-primary font-medium mb-2">EMAIL</p>
+                <p className="text-sm text-accent-primary font-medium mb-2">{t.contact.email}</p>
                 <a href="mailto:hello@tt-lab.dev" className="text-white hover:text-accent-primary transition-colors">
                   hello@tt-lab.dev
                 </a>
               </div>
 
               <div>
-                <p className="text-sm text-accent-primary font-medium mb-2">LOCATION</p>
+                <p className="text-sm text-accent-primary font-medium mb-2">{t.contact.location}</p>
                 <div className="flex items-center gap-2 text-white">
                   <HiGlobeAlt className="h-5 w-5 text-accent-primary" />
-                  <span>Remote / Global</span>
+                  <span>{t.contact.remoteGlobal}</span>
                 </div>
               </div>
 
               <div>
-                <p className="text-sm text-accent-primary font-medium mb-4">SOCIALS</p>
+                <p className="text-sm text-accent-primary font-medium mb-4">{t.contact.socials}</p>
                 <div className="flex gap-4">
                   <a href="#" className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors">
                     <HiMail className="h-5 w-5 text-white" />
@@ -78,13 +81,13 @@ const Contact = () => {
 
           {/* Right Column - Contact Form */}
           <div className="bg-dark-card border border-dark-border rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-6">Let's build something experimental</h2>
+            <h2 className="text-2xl font-bold mb-6">{t.contact.formTitle}</h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Full Name
+                    {t.contact.fullName}
                   </label>
                   <input
                     type="text"
@@ -99,7 +102,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email Address
+                    {t.contact.emailAddress}
                   </label>
                   <input
                     type="email"
@@ -116,7 +119,7 @@ const Contact = () => {
 
               <div>
                 <label htmlFor="projectType" className="block text-sm font-medium mb-2">
-                  Project Type
+                  {t.contact.projectType}
                 </label>
                 <select
                   id="projectType"
@@ -126,25 +129,25 @@ const Contact = () => {
                   className="w-full px-4 py-3 bg-dark-surface border border-dark-border rounded-lg text-white focus:outline-none focus:border-accent-primary transition-colors"
                   required
                 >
-                  <option value="">Select an option</option>
-                  <option value="ecommerce">E-Commerce</option>
-                  <option value="saas">SaaS Platform</option>
-                  <option value="web3">Web3 & DApps</option>
-                  <option value="design">Design System</option>
-                  <option value="other">Other</option>
+                  <option value="">{t.contact.selectOption}</option>
+                  <option value="ecommerce">{t.contact.ecommerce}</option>
+                  <option value="saas">{t.contact.saas}</option>
+                  <option value="web3">{t.contact.web3}</option>
+                  <option value="design">{t.contact.designSystem}</option>
+                  <option value="other">{t.contact.other}</option>
                 </select>
               </div>
 
               <div>
                 <label htmlFor="details" className="block text-sm font-medium mb-2">
-                  Project Details
+                  {t.contact.projectDetails}
                 </label>
                 <textarea
                   id="details"
                   name="details"
                   value={formData.details}
                   onChange={handleChange}
-                  placeholder="Tell us about your project, goals, and timeline..."
+                  placeholder={t.contact.projectDetailsPlaceholder}
                   rows={6}
                   className="w-full px-4 py-3 bg-dark-surface border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-primary transition-colors resize-none"
                   required
@@ -161,7 +164,7 @@ const Contact = () => {
                   className="w-5 h-5 bg-dark-surface border border-dark-border rounded text-accent-primary focus:ring-accent-primary focus:ring-2"
                 />
                 <label htmlFor="requireNDA" className="text-sm text-gray-300">
-                  Require a signed NDA before discussion?
+                  {t.contact.requireNDA}
                 </label>
               </div>
 
@@ -169,7 +172,7 @@ const Contact = () => {
                 type="submit"
                 className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors"
               >
-                Send Message
+                {t.contact.sendMessage}
                 <HiArrowRight className="h-5 w-5" />
               </button>
             </form>

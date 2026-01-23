@@ -3,15 +3,19 @@ import { HiBolt, HiArrowUp } from 'react-icons/hi2';
 import { FaReact, FaVuejs } from 'react-icons/fa';
 import { SiNextdotjs, SiTailwindcss, SiNodedotjs, SiSupabase, SiFirebase, SiGraphql, SiSentry } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa6';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/translations';
 
 const TechnologyStack = () => {
+  const { language } = useLanguage();
+  const t = translations[language] || translations.en;
   const [activeModule, setActiveModule] = useState('all');
 
   const modules = [
-    { id: 'all', label: 'ALL MODULES' },
-    { id: 'frontend', label: '01/FRONTEND' },
-    { id: 'backend', label: '02/BACKEND' },
-    { id: 'infrastructure', label: '03/INFRASTRUCTURE' },
+    { id: 'all', label: t.stack.allModules },
+    { id: 'frontend', label: t.stack.frontend },
+    { id: 'backend', label: t.stack.backend },
+    { id: 'infrastructure', label: t.stack.infrastructure },
   ];
 
   return (
@@ -20,18 +24,17 @@ const TechnologyStack = () => {
       <section className="max-w-7xl mx-auto mb-16">
         <div className="mb-4">
           <div className="w-12 h-0.5 bg-accent-primary mb-2" />
-          <p className="text-sm text-accent-primary font-medium">DIGITAL LABORATORY V2.0</p>
+          <p className="text-sm text-accent-primary font-medium">{t.stack.digitalLab}</p>
         </div>
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4">
-          Technology <span className="text-accent-primary">Stack.</span>
+          {t.stack.title} <span className="text-accent-primary">{t.stack.titleHighlight}</span>
         </h1>
         <p className="text-lg text-gray-300 max-w-3xl mb-6">
-          A curated selection of best-in-class tools and frameworks meticulously tuned for 
-          high-performance digital experiences.
+          {t.stack.description}
         </p>
         <button className="flex items-center gap-2 px-4 py-2 border border-accent-primary text-accent-primary rounded-lg hover:bg-accent-primary/10 transition-colors">
           <HiArrowUp className="h-4 w-4" />
-          View Architecture
+          {t.stack.viewArchitecture}
         </button>
       </section>
 
@@ -61,33 +64,32 @@ const TechnologyStack = () => {
             <div className="w-8 h-8 bg-accent-primary/20 rounded flex items-center justify-center">
               <HiBolt className="h-4 w-4 text-accent-primary" />
             </div>
-            <span className="text-xs text-accent-primary font-mono">CORE_FRONTEND_SYSTEM</span>
+            <span className="text-xs text-accent-primary font-mono">{t.stack.coreFrontend}</span>
           </div>
-          <h2 className="text-3xl font-bold mb-3">Reactive UI Architectures</h2>
+          <h2 className="text-3xl font-bold mb-3">{t.stack.reactiveUI}</h2>
           <p className="text-gray-400 mb-6">
-            We utilize React and Vue for building dynamic, high-fidelity user interfaces that scale 
-            across any screen size.
+            {t.stack.reactiveUIDesc}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-dark-surface border border-dark-border rounded-lg p-4 text-center">
               <FaReact className="h-8 w-8 text-accent-primary mx-auto mb-2" />
               <p className="text-white font-medium mb-1">React.js</p>
-              <p className="text-xs text-gray-400">COMPONENT_BASED</p>
+              <p className="text-xs text-gray-400">{t.stack.componentBased}</p>
             </div>
             <div className="bg-dark-surface border border-dark-border rounded-lg p-4 text-center">
               <FaVuejs className="h-8 w-8 text-accent-primary mx-auto mb-2" />
               <p className="text-white font-medium mb-1">Vue.js</p>
-              <p className="text-xs text-gray-400">REACTIVE_SYNC</p>
+              <p className="text-xs text-gray-400">{t.stack.reactiveSync}</p>
             </div>
             <div className="bg-dark-surface border border-dark-border rounded-lg p-4 text-center">
               <SiTailwindcss className="h-8 w-8 text-accent-primary mx-auto mb-2" />
               <p className="text-white font-medium mb-1">Tailwind</p>
-              <p className="text-xs text-gray-400">UTILITY_FIRST</p>
+              <p className="text-xs text-gray-400">{t.stack.utilityFirst}</p>
             </div>
             <div className="bg-dark-surface border border-dark-border rounded-lg p-4 text-center">
               <HiBolt className="h-8 w-8 text-accent-primary mx-auto mb-2" />
               <p className="text-white font-medium mb-1">Ant Design</p>
-              <p className="text-xs text-gray-400">ENTERPRISE_UI</p>
+              <p className="text-xs text-gray-400">{t.stack.enterpriseUI}</p>
             </div>
           </div>
         </div>
@@ -101,11 +103,11 @@ const TechnologyStack = () => {
             <div className="w-8 h-8 bg-accent-primary/20 rounded flex items-center justify-center">
               <HiBolt className="h-4 w-4 text-accent-primary" />
             </div>
-            <span className="text-xs text-accent-primary font-mono">SERVER_RUNTIME</span>
+            <span className="text-xs text-accent-primary font-mono">{t.stack.serverRuntime}</span>
           </div>
-          <h2 className="text-3xl font-bold mb-3">Engine & Data</h2>
+          <h2 className="text-3xl font-bold mb-3">{t.stack.engineData}</h2>
           <p className="text-gray-400 mb-6">
-            Robust server logic and real-time database synchronization for reliable enterprise applications.
+            {t.stack.engineDataDesc}
           </p>
           <div className="space-y-4">
             <div className="bg-dark-surface border border-dark-border rounded-lg p-4 flex items-center justify-between">
@@ -138,11 +140,11 @@ const TechnologyStack = () => {
             <div className="w-8 h-8 bg-accent-primary/20 rounded flex items-center justify-center">
               <HiBolt className="h-4 w-4 text-accent-primary" />
             </div>
-            <span className="text-xs text-accent-primary font-mono">CONTENT_LAYER</span>
+            <span className="text-xs text-accent-primary font-mono">{t.stack.contentLayer}</span>
           </div>
           <h2 className="text-3xl font-bold mb-3">Sanity.io</h2>
           <p className="text-gray-400">
-            Composability first, headless content management.
+            {t.stack.contentLayerDesc}
           </p>
         </div>
       </section>
@@ -154,19 +156,19 @@ const TechnologyStack = () => {
             <div className="w-8 h-8 bg-accent-primary/20 rounded flex items-center justify-center">
               <HiBolt className="h-4 w-4 text-accent-primary" />
             </div>
-            <span className="text-xs text-accent-primary font-mono">DEPLOYMENT</span>
+            <span className="text-xs text-accent-primary font-mono">{t.stack.deployment}</span>
           </div>
           <h2 className="text-3xl font-bold mb-3">Vercel & AWS</h2>
           <p className="text-gray-400">
-            Optimized delivery for the modern edge network.
+            {t.stack.deploymentDesc}
           </p>
         </div>
       </section>
 
       {/* System Components */}
       <section className="max-w-7xl mx-auto mb-12">
-        <h2 className="text-4xl font-bold mb-2">System Components</h2>
-        <p className="text-gray-400 mb-8">Deep dive into the specialized tools that power our workflow.</p>
+        <h2 className="text-4xl font-bold mb-2">{t.stack.systemComponents}</h2>
+        <p className="text-gray-400 mb-8">{t.stack.systemComponentsDesc}</p>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-dark-card border border-dark-border rounded-lg p-6">
             <div className="flex items-center gap-3 mb-3">
@@ -174,7 +176,7 @@ const TechnologyStack = () => {
               <h3 className="text-xl font-bold">Next.js 14</h3>
             </div>
             <p className="text-gray-400">
-              Full-stack React framework with server actions and optimized rendering.
+              {t.stack.nextjsDesc}
             </p>
           </div>
           <div className="bg-dark-card border border-dark-border rounded-lg p-6">
@@ -183,7 +185,7 @@ const TechnologyStack = () => {
               <h3 className="text-xl font-bold">GraphQL</h3>
             </div>
             <p className="text-gray-400">
-              Type-safe data fetching layer for complex frontend-backend interactions.
+              {t.stack.graphqlDesc}
             </p>
           </div>
           <div className="bg-dark-card border border-dark-border rounded-lg p-6">
@@ -192,7 +194,7 @@ const TechnologyStack = () => {
               <h3 className="text-xl font-bold">Auth.js</h3>
             </div>
             <p className="text-gray-400">
-              Secure, flexible authentication system for modern web applications.
+              {t.stack.authjsDesc}
             </p>
           </div>
           <div className="bg-dark-card border border-dark-border rounded-lg p-6">
@@ -201,7 +203,7 @@ const TechnologyStack = () => {
               <h3 className="text-xl font-bold">Sentry</h3>
             </div>
             <p className="text-gray-400">
-              Real-time error tracking and performance monitoring dashboard.
+              {t.stack.sentryDesc}
             </p>
           </div>
         </div>
@@ -220,34 +222,33 @@ const TechnologyStack = () => {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">NODE_CLUSTER_STATUS:</span>
-                <span className="text-sm text-green-400 font-mono">STABLE</span>
+                <span className="text-sm text-gray-400">{t.stack.nodeClusterStatus}</span>
+                <span className="text-sm text-green-400 font-mono">{t.stack.stable}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">LATENCY:</span>
+                <span className="text-sm text-gray-400">{t.stack.latency}</span>
                 <span className="text-sm text-white font-mono">12ms</span>
               </div>
             </div>
           </div>
           <div>
-            <h2 className="text-4xl font-bold mb-4">Optimized Infrastructure</h2>
+            <h2 className="text-4xl font-bold mb-4">{t.stack.optimizedInfrastructure}</h2>
             <p className="text-gray-400 mb-6">
-              Beyond just code, we engineer the environments where your applications live. From CI/CD 
-              pipelines to auto-scaling server clusters, we ensure 99.9% uptime and lightning-fast global delivery.
+              {t.stack.optimizedInfrastructureDesc}
             </p>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <HiBolt className="h-5 w-5 text-accent-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-1">Edge Computing</h3>
-                  <p className="text-sm text-gray-400">Running logic closer to users to reduce latency.</p>
+                  <h3 className="font-bold mb-1">{t.stack.edgeComputing}</h3>
+                  <p className="text-sm text-gray-400">{t.stack.edgeComputingDesc}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <HiBolt className="h-5 w-5 text-accent-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-1">Docker Containerization</h3>
-                  <p className="text-sm text-gray-400">Consistent environments from dev to production.</p>
+                  <h3 className="font-bold mb-1">{t.stack.dockerContainerization}</h3>
+                  <p className="text-sm text-gray-400">{t.stack.dockerContainerizationDesc}</p>
                 </div>
               </div>
             </div>

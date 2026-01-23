@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { HiArrowUpRight } from 'react-icons/hi2';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/translations';
 import Project1 from '../assets/project1/Project1.png?url';
 import Project2 from '../assets/project2/Project2.PNG?url';
 import Project3 from '../assets/project3/Main.PNG?url';
 
 const Portfolio = () => {
+  const { language } = useLanguage();
+  const t = translations[language] || translations.en;
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = [
-    { id: 'all', label: 'ALL EXPERIMENTS' },
-    { id: 'ecommerce', label: 'E-COMMERCE' },
-    { id: 'saas', label: 'SAAS PLATFORMS' },
-    { id: 'web3', label: 'WEB3 & DAPPS' },
-    { id: 'design', label: 'DESIGN SYSTEMS' },
+    { id: 'all', label: t.portfolio.allExperiments },
+    { id: 'ecommerce', label: t.portfolio.ecommerce },
+    { id: 'saas', label: t.portfolio.saas },
+    { id: 'web3', label: t.portfolio.web3 },
+    { id: 'design', label: t.portfolio.designSystems },
   ];
 
   const projects = [
@@ -75,19 +79,18 @@ const Portfolio = () => {
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto mb-16 text-center">
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4">
-          Digital Engineering for the{' '}
-          <span className="text-accent-primary">Modern Web</span>
+          {t.portfolio.title}{' '}
+          <span className="text-accent-primary">{t.portfolio.titleHighlight}</span>
         </h1>
         <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-          Exploring the intersection of performance, design, and scalable code. We build the future 
-          of the internet, one pixel at a time.
+          {t.portfolio.description}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button className="px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors">
-            View Our Work
+            {t.portfolio.viewWork}
           </button>
           <button className="px-6 py-3 border border-accent-primary text-white rounded-lg font-medium hover:bg-accent-primary/10 transition-colors">
-            The Lab Journal
+            {t.portfolio.labJournal}
           </button>
         </div>
       </section>
@@ -154,13 +157,12 @@ const Portfolio = () => {
 
       {/* Call to Action */}
       <section className="max-w-4xl mx-auto bg-dark-card border border-dark-border rounded-lg p-8 text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to build your next experiment?</h2>
+        <h2 className="text-3xl font-bold mb-4">{t.portfolio.readyToBuild}</h2>
         <p className="text-gray-400 mb-6">
-          We're currently accepting new projects for Q3. Let's collaborate on your technical vision 
-          and push the boundaries of what's possible.
+          {t.portfolio.readyToBuildDesc}
         </p>
         <button className="px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors">
-          Contact the Lab
+          {t.portfolio.contactLab}
         </button>
       </section>
     </div>
