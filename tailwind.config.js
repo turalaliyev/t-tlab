@@ -8,15 +8,19 @@ export default {
     extend: {
       colors: {
         dark: {
-          bg: '#0a0a0a',
-          surface: '#111111',
-          card: '#1a1a1a',
-          border: '#2a2a2a',
+          bg: '#1a0f0a',
+          surface: '#2d1f18',
+          card: '#3d2e25',
+          border: '#5a4538',
         },
         accent: {
           primary: '#00ff88',
           secondary: '#00d4ff',
+          light: '#4dd0e1',
         }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-in-out',

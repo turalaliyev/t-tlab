@@ -1,49 +1,30 @@
-import { useState, useEffect } from 'react'
-import Navigation from './components/Navigation'
-import Hero from './components/Hero'
-import Projects from './components/Projects'
-import Services from './components/Services'
-import Tools from './components/Tools'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navigation from './components/Navigation';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import TechnologyStack from './pages/TechnologyStack';
+import Portfolio from './pages/Portfolio';
+import Contact from './pages/Contact';
+import CaseStudy from './pages/CaseStudy';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home')
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'projects', 'services', 'tools', 'contact']
-      const scrollPosition = window.scrollY + 100
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <div className="min-h-screen bg-dark-bg">
-      <Navigation activeSection={activeSection} />
-      <main>
-        <Hero />
-        <Projects />
-        <Services />
-        <Tools />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
-  )
+    <Router>
+      <div className="min-h-screen bg-dark-bg">
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/stack" element={<TechnologyStack />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/case-study" element={<CaseStudy />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;

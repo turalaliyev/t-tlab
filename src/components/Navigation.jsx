@@ -1,109 +1,58 @@
-import { useState, useEffect } from 'react'
-import { HiMenu, HiX } from 'react-icons/hi'
+import { Link, useLocation } from 'react-router-dom';
+import { HiBolt } from 'react-icons/hi2';
 
-const Navigation = ({ activeSection }) => {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+const Navigation = () => {
+  const location = useLocation();
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'services', label: 'Services' },
-    { id: 'tools', label: 'Tools' },
-    { id: 'contact', label: 'Contact' },
-  ]
+    { path: '/', label: 'Services' },
+    { path: '/stack', label: 'Stack' },
+    { path: '/portfolio', label: 'Portfolio' },
+    { path: '/contact', label: 'Contact' },
+  ];
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      setIsMobileMenuOpen(false)
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/';
     }
-  }
+    return location.pathname.startsWith(path);
+  };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-dark-surface/95 backdrop-blur-md border-b border-dark-border shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-bg/95 backdrop-blur-md border-b border-dark-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            <button
-              onClick={() => scrollToSection('home')}
-              className="text-2xl font-bold text-gradient transition-transform hover:scale-105"
-            >
-              T&T Lab
-            </button>
-          </div>
+          <Link to="/" className="flex items-center gap-2 text-white hover:text-accent-primary transition-colors">
+            <HiBolt className="h-6 w-6 text-accent-primary" />
+            <span className="text-xl font-bold">T&T LAB</span>
+          </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 ${
-                  activeSection === item.id
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(item.path)
                     ? 'text-accent-primary'
-                    : 'text-gray-300 hover:text-accent-primary'
+                    : 'text-white hover:text-accent-primary'
                 }`}
               >
                 {item.label}
-                {activeSection === item.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-primary animate-glow" />
-                )}
-              </button>
+              </Link>
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-300 hover:text-accent-primary transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          <Link
+            to="/contact"
+            className="px-4 py-2 bg-accent-primary text-dark-bg rounded-lg font-medium text-sm hover:bg-accent-light transition-colors"
           >
-            {isMobileMenuOpen ? (
-              <HiX className="h-6 w-6" />
-            ) : (
-              <HiMenu className="h-6 w-6" />
-            )}
-          </button>
+            Request a Quote
+          </Link>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-dark-surface border-t border-dark-border">
-          <div className="px-4 py-4 space-y-2">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`block w-full text-left px-4 py-2 rounded-lg transition-all duration-300 ${
-                  activeSection === item.id
-                    ? 'bg-dark-card text-accent-primary border-l-2 border-accent-primary'
-                    : 'text-gray-300 hover:bg-dark-card hover:text-accent-primary'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
     </nav>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;

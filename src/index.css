@@ -20,7 +20,7 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-secondary;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-light;
   }
   
   .border-gradient {
