@@ -5,6 +5,9 @@ import { SiNextdotjs } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa6';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations/translations';
+import LightningImg from '../assets/Lightning.jpg';
+import ScalableImg from '../assets/Scalable.jpg';
+import ContentImg from '../assets/Content.jpg';
 
 const Home = () => {
   const { language } = useLanguage();
@@ -95,8 +98,13 @@ const Home = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Lightning Fast */}
             <div className="bg-dark-card border border-dark-border rounded-lg p-6 hover:border-accent-primary/50 transition-colors">
-              <div className="h-48 bg-gradient-to-br from-accent-primary/20 to-transparent rounded-lg mb-4 flex items-center justify-center">
-                <HiBolt className="h-16 w-16 text-accent-primary opacity-50" />
+              <div className="h-60 mb-4 overflow-hidden rounded-lg">
+                <img
+                  src={LightningImg}
+                  alt="Lightning fast performance visual"
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  loading="lazy"
+                />
               </div>
               <h3 className="text-xl font-bold mb-3">{t.home.lightningFast}</h3>
               <p className="text-gray-400">
@@ -106,12 +114,13 @@ const Home = () => {
 
             {/* Scalable Infrastructure */}
             <div className="bg-dark-card border border-dark-border rounded-lg p-6 hover:border-accent-primary/50 transition-colors">
-              <div className="h-48 bg-gradient-to-br from-accent-primary/20 to-transparent rounded-lg mb-4 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-2">
-                  {[...Array(9)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 bg-accent-primary rounded-full opacity-50" />
-                  ))}
-                </div>
+              <div className="h-60 mb-4 overflow-hidden rounded-lg">
+                <img
+                  src={ScalableImg}
+                  alt="Scalable infrastructure illustration"
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  loading="lazy"
+                />
               </div>
               <h3 className="text-xl font-bold mb-3">{t.home.scalableInfrastructure}</h3>
               <p className="text-gray-400">
@@ -121,10 +130,13 @@ const Home = () => {
 
             {/* Content First */}
             <div className="bg-dark-card border border-dark-border rounded-lg p-6 hover:border-accent-primary/50 transition-colors">
-              <div className="h-48 bg-gradient-to-br from-accent-primary/20 to-transparent rounded-lg mb-4 flex items-center justify-center">
-                <div className="text-accent-primary/50 font-mono text-xs">
-                  {'<Content />'}
-                </div>
+              <div className="h-60 mb-4 overflow-hidden rounded-lg">
+                <img
+                  src={ContentImg}
+                  alt="Content-first experience illustration"
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  loading="lazy"
+                />
               </div>
               <h3 className="text-xl font-bold mb-3">{t.home.contentFirst}</h3>
               <p className="text-gray-400">

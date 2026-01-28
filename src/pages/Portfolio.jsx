@@ -1,78 +1,53 @@
-import { useState } from 'react';
 import { HiArrowUpRight } from 'react-icons/hi2';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations/translations';
 import Project1 from '../assets/project1/Project1.png?url';
 import Project2 from '../assets/project2/Project2.PNG?url';
 import Project3 from '../assets/project3/Main.PNG?url';
+import { Link } from 'react-router-dom';
 
 const Portfolio = () => {
   const { language } = useLanguage();
   const t = translations[language] || translations.en;
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const categories = [
-    { id: 'all', label: t.portfolio.allExperiments },
-    { id: 'ecommerce', label: t.portfolio.ecommerce },
-    { id: 'saas', label: t.portfolio.saas },
-    { id: 'web3', label: t.portfolio.web3 },
-    { id: 'design', label: t.portfolio.designSystems },
-  ];
 
   const projects = [
     {
       id: 1,
-      title: 'Lumina SaaS',
-      description: 'A high-performance analytics platform featuring real-time data streaming and custom visualization engine.',
-      technologies: ['REACT', 'SUPABASE', 'TAILWIND'],
+      title: 'Danilov',
+      descriptions: {
+        en: 'A high-performance ecommerce experience for a premium shoes brand, optimized for fast browsing and conversion.',
+        ru: 'Высокопроизводительный интернет‑магазин для премиального бренда обуви с быстрым каталогом и сфокусированной конверсией.',
+        az: 'Premium ayaqqabı brendi üçün sürətli kataloq və satışa yönəlmiş müasir e-ticarət təcrübəsi.',
+      },
+      technologies: ['REACT', 'SANITY', 'TAILWIND'],
       image: Project3,
-      category: 'saas',
+      url: 'https://danilov.az',
     },
     {
       id: 2,
-      title: 'Nexus Dashboard',
-      description: 'Technical monitoring dashboard for multi-cloud infrastructure with predictive anomaly detection.',
+      title: 'RE:AZ',
+      descriptions: {
+        en: 'A modern digital agency website for RE:AZ with smooth animations, project highlights, and a clear services narrative.',
+        ru: 'Современный сайт цифрового агентства RE:AZ с плавными анимациями, кейсами и понятной презентацией услуг.',
+        az: 'RE:AZ üçün layihələri, xidmətləri və hekayəni vurğulayan animasiyalı müasir rəqəmsal agentlik saytı.',
+      },
       technologies: ['NEXT.JS', 'TYPESCRIPT', 'FRAMER'],
       image: Project1,
-      category: 'saas',
+      url: 'https://design-az.netlify.app/',
     },
     {
       id: 3,
-      title: 'Aether Commerce',
-      description: 'Next-generation headless commerce platform with sub-second page loads and custom checkout flows.',
+      title: 'Fresh Garden Quba',
+      descriptions: {
+        en: 'A visually rich landing page for the Fresh Garden Quba resort, emphasizing atmosphere, photography, and easy booking.',
+        ru: 'Насыщенный визуалами лендинг для курорта Fresh Garden Quba с акцентом на атмосферу, фотографии и удобное бронирование.',
+        az: 'Fresh Garden Quba kurortu üçün atmosferi, fotoları və rahat bron sistemini önə çıxaran vizual cəhətdən zəngin landinq.',
+      },
       technologies: ['VUE', 'SHOPIFY', 'GRAPHQL'],
       image: Project2,
-      category: 'ecommerce',
-    },
-    {
-      id: 4,
-      title: 'Vertex Portal',
-      description: 'Secure enterprise gateway for large-scale data management and internal tool synchronization.',
-      technologies: ['NODE.JS', 'AWS', 'POSTGRESQL'],
-      image: Project3,
-      category: 'saas',
-    },
-    {
-      id: 5,
-      title: 'Core Engine',
-      description: 'A proprietary backend architecture visualization tool for debugging distributed microservices.',
-      technologies: ['PYTHON', 'DOCKER', 'REDIS'],
-      image: Project1,
-      category: 'web3',
-    },
-    {
-      id: 6,
-      title: 'Delta Interface',
-      description: 'A modern, accessible design system framework built for rapid prototyping and scale.',
-      technologies: ['TYPESCRIPT', 'STORYBOOK', 'FIGMA'],
-      image: Project2,
-      category: 'design',
+      url: 'https://freshgardenquba.az/',
     },
   ];
-
-  const filteredProjects = activeCategory === 'all' 
-    ? projects 
-    : projects.filter(p => p.category === activeCategory);
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8">
@@ -85,41 +60,17 @@ const Portfolio = () => {
         <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
           {t.portfolio.description}
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors">
-            {t.portfolio.viewWork}
-          </button>
-          <button className="px-6 py-3 border border-accent-primary text-white rounded-lg font-medium hover:bg-accent-primary/10 transition-colors">
-            {t.portfolio.labJournal}
-          </button>
-        </div>
-      </section>
-
-      {/* Category Navigation */}
-      <section className="max-w-7xl mx-auto mb-12">
-        <div className="flex flex-wrap gap-4 border-b border-dark-border pb-4">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                activeCategory === category.id
-                  ? 'text-accent-primary border-b-2 border-accent-primary'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div>
       </section>
 
       {/* Projects Grid */}
       <section className="max-w-7xl mx-auto mb-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <div
+          {projects.map((project) => (
+            <a
               key={project.id}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group bg-dark-card border border-dark-border rounded-lg overflow-hidden hover:border-accent-primary/50 transition-all cursor-pointer"
             >
               <div className="relative h-64 overflow-hidden">
@@ -137,7 +88,8 @@ const Portfolio = () => {
                   {project.title}
                 </h3>
                 <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                  {project.description}
+                  {(project.descriptions && project.descriptions[language]) ||
+                    (project.descriptions && project.descriptions.en)}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech, index) => (
@@ -150,7 +102,7 @@ const Portfolio = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -161,9 +113,9 @@ const Portfolio = () => {
         <p className="text-gray-400 mb-6">
           {t.portfolio.readyToBuildDesc}
         </p>
-        <button className="px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors">
+        <Link to={'/contact'} className="px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors">
           {t.portfolio.contactLab}
-        </button>
+        </Link>
       </section>
     </div>
   );

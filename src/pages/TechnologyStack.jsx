@@ -9,14 +9,6 @@ import { translations } from '../translations/translations';
 const TechnologyStack = () => {
   const { language } = useLanguage();
   const t = translations[language] || translations.en;
-  const [activeModule, setActiveModule] = useState('all');
-
-  const modules = [
-    { id: 'all', label: t.stack.allModules },
-    { id: 'frontend', label: t.stack.frontend },
-    { id: 'backend', label: t.stack.backend },
-    { id: 'infrastructure', label: t.stack.infrastructure },
-  ];
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8">
@@ -32,30 +24,8 @@ const TechnologyStack = () => {
         <p className="text-lg text-gray-300 max-w-3xl mb-6">
           {t.stack.description}
         </p>
-        <button className="flex items-center gap-2 px-4 py-2 border border-accent-primary text-accent-primary rounded-lg hover:bg-accent-primary/10 transition-colors">
-          <HiArrowUp className="h-4 w-4" />
-          {t.stack.viewArchitecture}
-        </button>
       </section>
 
-      {/* Module Navigation */}
-      <section className="max-w-7xl mx-auto mb-12">
-        <div className="flex flex-wrap gap-4 border-b border-dark-border pb-4">
-          {modules.map((module) => (
-            <button
-              key={module.id}
-              onClick={() => setActiveModule(module.id)}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                activeModule === module.id
-                  ? 'text-accent-primary border-b-2 border-accent-primary'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {module.label}
-            </button>
-          ))}
-        </div>
-      </section>
 
       {/* Core Frontend System */}
       <section className="max-w-7xl mx-auto mb-12">
@@ -205,53 +175,6 @@ const TechnologyStack = () => {
             <p className="text-gray-400">
               {t.stack.sentryDesc}
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Optimized Infrastructure */}
-      <section className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-dark-card border border-dark-border rounded-lg p-8">
-            <div className="h-64 bg-gradient-to-br from-accent-primary/20 to-transparent rounded-lg mb-4 flex items-center justify-center">
-              <div className="grid grid-cols-4 gap-3">
-                {[...Array(16)].map((_, i) => (
-                  <div key={i} className="w-3 h-3 bg-accent-primary rounded-full opacity-50" />
-                ))}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">{t.stack.nodeClusterStatus}</span>
-                <span className="text-sm text-green-400 font-mono">{t.stack.stable}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">{t.stack.latency}</span>
-                <span className="text-sm text-white font-mono">12ms</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h2 className="text-4xl font-bold mb-4">{t.stack.optimizedInfrastructure}</h2>
-            <p className="text-gray-400 mb-6">
-              {t.stack.optimizedInfrastructureDesc}
-            </p>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <HiBolt className="h-5 w-5 text-accent-primary mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-bold mb-1">{t.stack.edgeComputing}</h3>
-                  <p className="text-sm text-gray-400">{t.stack.edgeComputingDesc}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <HiBolt className="h-5 w-5 text-accent-primary mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-bold mb-1">{t.stack.dockerContainerization}</h3>
-                  <p className="text-sm text-gray-400">{t.stack.dockerContainerizationDesc}</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

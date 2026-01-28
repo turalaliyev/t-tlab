@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HiArrowRight, HiGlobeAlt } from 'react-icons/hi2';
-import { HiMail, HiShare } from 'react-icons/hi';
+import { HiMail } from 'react-icons/hi';
+import { FaWhatsapp, FaTelegramPlane, FaInstagram } from 'react-icons/fa';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations/translations';
 
@@ -25,8 +26,25 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+
+    const subject = encodeURIComponent(
+      `New project inquiry from ${formData.name || 'Website Contact'}`
+    );
+
+    const bodyLines = [
+      `Name: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `Project type: ${formData.projectType}`,
+      '',
+      'Project details:',
+      formData.details,
+      '',
+      `NDA required: ${formData.requireNDA ? 'Yes' : 'No'}`,
+    ];
+
+    const body = encodeURIComponent(bodyLines.join('\n'));
+
+    window.location.href = `mailto:tural.aliyev555@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -44,8 +62,15 @@ const Contact = () => {
             <div className="space-y-8">
               <div>
                 <p className="text-sm text-accent-primary font-medium mb-2">{t.contact.email}</p>
-                <a href="mailto:hello@tt-lab.dev" className="text-white hover:text-accent-primary transition-colors">
-                  hello@tt-lab.dev
+                <a href="mailto:tural.aliyev555@gmail.com" className="text-white hover:text-accent-primary transition-colors">
+                  tural.aliyev555@gmail.com
+                </a>
+              </div>
+
+              <div>
+                <p className="text-sm text-accent-primary font-medium mb-2">{t.contact.phone}</p>
+                <a href="tel:+994508747905" className="text-white hover:text-accent-primary transition-colors">
+                  +994 50 874 79 05
                 </a>
               </div>
 
@@ -60,22 +85,46 @@ const Contact = () => {
               <div>
                 <p className="text-sm text-accent-primary font-medium mb-4">{t.contact.socials}</p>
                 <div className="flex gap-4">
-                  <a href="#" className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors">
+                  {/* Email */}
+                  <a
+                    href="mailto:tural.aliyev555@gmail.com"
+                    className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors"
+                    aria-label="Email"
+                  >
                     <HiMail className="h-5 w-5 text-white" />
                   </a>
-                  <a href="#" className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors">
-                    <HiShare className="h-5 w-5 text-white" />
+                  {/* WhatsApp */}
+                  <a
+                    href="https://wa.me/994508747905"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors"
+                    aria-label="WhatsApp"
+                  >
+                    <FaWhatsapp className="h-5 w-5 text-white" />
                   </a>
-                  <a href="#" className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors">
-                    <HiGlobeAlt className="h-5 w-5 text-white" />
+                  {/* Telegram */}
+                  <a
+                    href="https://t.me/tural_1995_aliyev"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors"
+                    aria-label="Telegram"
+                  >
+                    <FaTelegramPlane className="h-5 w-5 text-white" />
+                  </a>
+                  {/* Instagram */}
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center hover:border-accent-primary transition-colors"
+                    aria-label="Instagram"
+                  >
+                    <FaInstagram className="h-5 w-5 text-white" />
                   </a>
                 </div>
               </div>
-            </div>
-
-            {/* Map placeholder */}
-            <div className="mt-12 h-64 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center">
-              <HiGlobeAlt className="h-16 w-16 text-gray-600" />
             </div>
           </div>
 
