@@ -3,27 +3,53 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    @apply border-dark-border;
-  }
-  
   body {
-    @apply bg-dark-bg text-white antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background-color: #060a12;
+    color: #e2e8f0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html {
     scroll-behavior: smooth;
   }
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-light;
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  
-  .border-gradient {
-    border-image: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 212, 255, 0.3)) 1;
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    background: rgba(11, 17, 32, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.1);
+  }
+
+  .glass-hover:hover {
+    background: rgba(15, 25, 41, 0.85);
+    border-color: rgba(56, 189, 248, 0.28);
+    box-shadow: 0 8px 40px rgba(56, 189, 248, 0.08);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
 }

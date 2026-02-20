@@ -7,40 +7,30 @@ export default {
   theme: {
     extend: {
       colors: {
-        dark: {
-          bg: '#1a0f0a',
-          surface: '#2d1f18',
-          card: '#3d2e25',
-          border: '#5a4538',
+        brand: {
+          bg: '#060a12',
+          surface: '#0b1120',
+          card: '#0f1929',
+          border: '#1a2740',
         },
-        accent: {
-          primary: '#00ff88',
-          secondary: '#00d4ff',
-          light: '#4dd0e1',
-        }
+        neon: {
+          blue: '#38bdf8',
+          purple: '#a78bfa',
+          cyan: '#22d3ee',
+          green: '#4ade80',
+          pink: '#f472b6',
+        },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
-      animation: {
-        'fade-in': 'fadeIn 0.6s ease-in-out',
-        'slide-up': 'slideUp 0.6s ease-out',
-        'glow': 'glow 2s ease-in-out infinite alternate',
+      boxShadow: {
+        neon: '0 0 24px rgba(56,189,248,0.4), 0 0 64px rgba(56,189,248,0.15)',
+        'neon-sm': '0 0 12px rgba(56,189,248,0.35)',
+        'neon-purple': '0 0 24px rgba(167,139,250,0.4)',
       },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        glow: {
-          '0%': { boxShadow: '0 0 5px rgba(0, 255, 136, 0.5)' },
-          '100%': { boxShadow: '0 0 20px rgba(0, 255, 136, 0.8), 0 0 30px rgba(0, 255, 136, 0.4)' },
-        }
-      }
     },
   },
   plugins: [],

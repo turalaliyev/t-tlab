@@ -14,7 +14,7 @@ const CaseStudy = () => {
         <section className="mb-20">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-block px-3 py-1 bg-accent-primary/10 border border-accent-primary/30 rounded-full mb-4">
+              <div className="inline-block px-3 py-1 bg-accent-primary/10 border border-accent-primary/30 rounded mb-4">
                 <span className="text-sm text-accent-primary font-medium">CASE STUDY: E-COMMERCE</span>
               </div>
               <h1 className="text-5xl sm:text-6xl font-bold mb-6">
@@ -25,20 +25,20 @@ const CaseStudy = () => {
                 and lightning-fast user interactions.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="flex items-center gap-2 px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors">
+                <button className="flex items-center gap-2 px-6 py-3 bg-accent-primary text-dark-bg rounded font-medium hover:bg-accent-light transition-colors">
                   View Live Site
                   <HiArrowTopRightOnSquare className="h-5 w-5" />
                 </button>
-                <button className="px-6 py-3 border border-accent-primary text-white rounded-lg font-medium hover:bg-accent-primary/10 transition-colors">
+                <button className="px-6 py-3 border border-accent-primary text-white rounded font-medium hover:bg-accent-primary/10 transition-colors">
                   Client Interview
                 </button>
               </div>
             </div>
             <div className="relative">
-              <div className="bg-dark-card border border-dark-border rounded-lg p-8">
-                <div className="aspect-video bg-gradient-to-br from-accent-primary/20 to-transparent rounded-lg flex items-center justify-center">
+              <div className="bg-dark-card border border-dark-border rounded p-8">
+                <div className="aspect-video bg-gradient-to-br from-accent-primary/20 to-transparent rounded flex items-center justify-center">
                   <div className="text-center">
-                    <div className="w-24 h-24 bg-accent-primary/20 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                    <div className="w-24 h-24 bg-accent-primary/20 rounded mx-auto mb-4 flex items-center justify-center">
                       <HiBolt className="h-12 w-12 text-accent-primary" />
                     </div>
                     <p className="text-gray-400">Project Mockup</p>
@@ -86,19 +86,19 @@ const CaseStudy = () => {
           <h2 className="text-4xl font-bold mb-4">Technical Architecture</h2>
           <div className="w-24 h-1 bg-accent-primary mb-8" />
           <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <FaReact className="h-8 w-8 text-accent-primary mx-auto mb-3" />
               <p className="text-white font-medium">React / Next.js</p>
             </div>
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <SiGraphql className="h-8 w-8 text-accent-primary mx-auto mb-3" />
               <p className="text-white font-medium">GraphQL</p>
             </div>
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <SiAws className="h-8 w-8 text-accent-primary mx-auto mb-3" />
               <p className="text-white font-medium">AWS Lambda</p>
             </div>
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <HiBolt className="h-8 w-8 text-accent-primary mx-auto mb-3" />
               <p className="text-white font-medium">PostgreSQL</p>
             </div>
@@ -119,7 +119,7 @@ const CaseStudy = () => {
                 { number: '04', title: 'Optimization', description: 'Load testing and final performance tuning.' },
               ].map((step, index) => (
                 <div key={index} className="flex gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 bg-accent-primary rounded-full flex items-center justify-center text-dark-bg font-bold text-xl">
+                  <div className="flex-shrink-0 w-16 h-16 bg-accent-primary rounded flex items-center justify-center text-dark-bg font-bold text-xl">
                     {step.number}
                   </div>
                   <div>
@@ -135,24 +135,24 @@ const CaseStudy = () => {
         {/* Results & Testimonial */}
         <section className="grid md:grid-cols-2 gap-8 mb-20">
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <p className="text-4xl font-bold text-accent-primary mb-2">150%</p>
               <p className="text-sm text-gray-400">SPEED INCREASE</p>
             </div>
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <p className="text-4xl font-bold text-accent-primary mb-2">22%</p>
               <p className="text-sm text-gray-400">CONVERSION BOOST</p>
             </div>
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <p className="text-4xl font-bold text-accent-primary mb-2">0.8s</p>
               <p className="text-sm text-gray-400">AVG. PAGE LOAD</p>
             </div>
-            <div className="bg-dark-card border border-accent-primary/30 rounded-lg p-6 text-center">
+            <div className="bg-dark-card border border-accent-primary/30 rounded p-6 text-center">
               <p className="text-4xl font-bold text-accent-primary mb-2">99.9%</p>
               <p className="text-sm text-gray-400">UPTIME RELIABILITY</p>
             </div>
           </div>
-          <div className="bg-accent-primary rounded-lg p-8">
+          <div className="bg-accent-primary rounded p-8">
             <div className="text-4xl text-dark-bg mb-4">"</div>
             <blockquote className="text-dark-bg text-lg mb-6">
               T&T Lab didn't just rebuild our site; they rebuilt our business. The speed and stability 
@@ -174,7 +174,7 @@ const CaseStudy = () => {
             </div>
             <Link
               to="/contact"
-              className="px-6 py-3 bg-accent-primary text-dark-bg rounded-lg font-medium hover:bg-accent-light transition-colors"
+              className="px-6 py-3 bg-accent-primary text-dark-bg rounded font-medium hover:bg-accent-light transition-colors"
             >
               Get in Touch
             </Link>
