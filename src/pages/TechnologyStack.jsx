@@ -50,7 +50,7 @@ export default function TechnologyStack() {
             {t.stack.title}{' '}
             <span className="text-gradient-blue italic">{t.stack.titleHighlight}</span>
           </h1>
-          <p className="text-lg text-slate-400 max-w-2xl">{t.stack.description}</p>
+          <p className="text-lg text-slate-500 max-w-2xl">{t.stack.description}</p>
         </motion.div>
 
         {/* Core Frontend */}

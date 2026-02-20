@@ -100,7 +100,7 @@ export default function Contact() {
             {/* Location */}
             <div>
               <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-2">{t.contact.location}</p>
-              <div className="flex items-center gap-2 text-slate-200">
+              <div className="flex items-center gap-2 text-white">
                 <HiGlobeAlt className="h-5 w-5 text-neon-blue/60" />
                 <span>{t.contact.remoteGlobal}</span>
               </div>
@@ -119,7 +119,7 @@ export default function Contact() {
                     aria-label={label}
                     whileHover={{ scale: 1.12, y: -2 }}
                     transition={{ duration: 0.18 }}
-                    className="w-11 h-11 rounded border border-brand-border bg-brand-card flex items-center justify-center text-slate-500 hover:border-neon-blue/50 hover:text-neon-blue transition-colors duration-200"
+                    className="w-11 h-11 rounded border border-brand-border bg-brand-card flex items-center justify-center text-slate-400 hover:border-neon-blue/50 hover:text-neon-blue transition-colors duration-200"
                   >
                     <Icon className="h-5 w-5" />
                   </motion.a>
@@ -205,7 +205,7 @@ export default function Contact() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="w-full flex items-center justify-center gap-2 py-3.5 rounded text-white font-semibold text-sm transition-all"
-                  style={{ background: 'linear-gradient(135deg, #38bdf8, #a78bfa)' }}
+                  style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
                 >
                   {t.contact.sendMessage}
                   <HiArrowRight className="h-5 w-5" />

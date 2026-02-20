@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { HiArrowRight, HiArrowUpRight, HiChevronUp, HiChevronDown } from 'react-icons/hi2';
+import { HiArrowRight, HiArrowUpRight } from 'react-icons/hi2';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations/translations';
 import NeuralBackground from '../components/NeuralBackground';
@@ -107,107 +106,11 @@ const STATS = [
   { value: '24h', label: { en: 'Response time', ru: 'Время ответа', az: 'Cavab müddəti' } },
 ];
 
-/* -- Section navigator ------------------------------------------------- */
-function useSectionIndex(containerRef) {
-  const [index, setIndex] = useState(0);
-  const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const sections = [...container.querySelectorAll('section[data-snap]')];
-    setTotal(sections.length);
-
-    const update = () => {
-      let best = 0;
-      let bestDist = Infinity;
-      sections.forEach((el, i) => {
-        const dist = Math.abs(el.getBoundingClientRect().top);
-        if (dist < bestDist) { bestDist = dist; best = i; }
-      });
-      setIndex(best);
-    };
-
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, [containerRef]);
-
-  return [index, total];
-}
-
-function SectionNavigator({ containerRef }) {
-  const [index, total] = useSectionIndex(containerRef);
-  const isScrolling = useRef(false);
-
-  const goTo = (targetIndex) => {
-    if (isScrolling.current) return;
-    if (targetIndex < 0 || targetIndex >= total) return;
-    const container = containerRef.current;
-    if (!container) return;
-    const sections = [...container.querySelectorAll('section[data-snap]')];
-    const target = sections[targetIndex];
-    if (!target) return;
-    isScrolling.current = true;
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => { isScrolling.current = false; }, 850);
-  };
-
-  const canUp = index > 0;
-  const canDown = total > 0 && index < total - 1;
-
-  const btnBase = 'w-9 h-9 flex items-center justify-center rounded border transition-all duration-200';
-  const btnActive = 'border-brand-border bg-brand-card/80 backdrop-blur-sm text-slate-400 hover:border-neon-blue/50 hover:text-neon-blue hover:bg-brand-surface cursor-pointer';
-  const btnDisabled = 'border-brand-border/25 bg-brand-card/20 text-slate-700 cursor-default';
-
-  return (
-    <div className="fixed right-5 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2 items-center">
-      <button
-        onClick={() => goTo(index - 1)}
-        disabled={!canUp}
-        aria-label="Scroll to previous section"
-        className={`${btnBase} ${canUp ? btnActive : btnDisabled}`}
-      >
-        <HiChevronUp className="h-5 w-5" />
-      </button>
-
-      <div className="flex flex-col items-center gap-1.5 py-1">
-        {Array.from({ length: total }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            aria-label={`Go to section ${i + 1}`}
-            className="w-1.5 transition-all duration-300"
-            style={{
-              height: i === index ? '20px' : '6px',
-              borderRadius: '2px',
-              background: i === index
-                ? 'linear-gradient(180deg, #38bdf8, #a78bfa)'
-                : 'rgba(56,189,248,0.25)',
-            }}
-          />
-        ))}
-      </div>
-
-      <button
-        onClick={() => goTo(index + 1)}
-        disabled={!canDown}
-        aria-label="Scroll to next section"
-        className={`${btnBase} ${canDown ? btnActive : btnDisabled}`}
-      >
-        <HiChevronDown className="h-5 w-5" />
-      </button>
-    </div>
-  );
-}
-
-/* ── component ─────────────────────────────────────────── */
 export default function Home() {
   const { language } = useLanguage();
   const t = translations[language] || translations.en;
   const loc = (obj) => (obj && obj[language]) || obj?.en || '';
-  const pageRef = useRef(null);
-
   const projects = [
     {
       id: 1,
@@ -239,10 +142,7 @@ export default function Home() {
   ];
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-transparent text-slate-100 overflow-x-hidden">
-
-      {/* Floating section navigator */}
-      <SectionNavigator containerRef={pageRef} />
+    <div className="min-h-screen bg-transparent text-slate-100 overflow-x-hidden">
 
       {/* ══════════════ HERO ══════════════ */}
       <section data-snap className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -288,7 +188,7 @@ export default function Home() {
             <Link
               to="/contact"
               className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded font-semibold text-sm text-white transition-all duration-300 hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #38bdf8, #a78bfa)' }}
+              style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
             >
               {t.home.getStarted}
               <HiArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -327,7 +227,7 @@ export default function Home() {
               className={`text-center py-4 ${i < 3 ? 'md:border-r border-brand-border' : ''}`}
             >
               <p className="text-3xl sm:text-4xl font-serif font-semibold text-gradient-blue mb-1">{s.value}</p>
-              <p className="text-sm text-slate-500">{loc(s.label)}</p>
+              <p className="text-sm text-slate-400">{loc(s.label)}</p>
             </motion.div>
           ))}
         </div>
@@ -382,7 +282,7 @@ export default function Home() {
                       {loc(p.category)}
                     </span>
                     <h3 className="font-serif text-xl sm:text-2xl font-semibold text-white mb-1">{p.title}</h3>
-                    <p className="text-sm text-slate-500">{loc(p.tagline)}</p>
+                    <p className="text-sm text-slate-400">{loc(p.tagline)}</p>
                   </div>
                 </motion.a>
               </motion.div>
@@ -392,7 +292,7 @@ export default function Home() {
           <motion.div variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="mt-10 text-center">
             <Link to="/portfolio"
-              className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-neon-blue transition-colors font-medium">
+              className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-neon-blue transition-colors font-medium">
               {t.home.viewAllProjects} <HiArrowUpRight className="h-4 w-4" />
             </Link>
           </motion.div>
@@ -428,7 +328,7 @@ export default function Home() {
                   {svc.icon}
                 </div>
                 <h3 className="font-semibold text-white mb-2 text-lg">{loc(svc.title)}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed flex-1">{loc(svc.desc)}</p>
+                <p className="text-slate-400 text-sm leading-relaxed flex-1">{loc(svc.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -477,7 +377,7 @@ export default function Home() {
                   {item.step}
                 </div>
                 <h3 className="font-semibold text-white text-lg mb-3">{loc(item.title)}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{loc(item.desc)}</p>
+                <p className="text-slate-400 text-sm leading-relaxed">{loc(item.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -502,7 +402,7 @@ export default function Home() {
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-9 py-4 rounded text-white font-semibold transition-all duration-300"
-                style={{ background: 'linear-gradient(135deg, #38bdf8, #a78bfa)' }}
+                style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
               >
                 {t.home.contactLab}
                 <HiArrowRight className="h-4 w-4" />

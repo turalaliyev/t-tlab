@@ -171,7 +171,7 @@ export default function Portfolio() {
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded text-white font-semibold text-sm"
-              style={{ background: 'linear-gradient(135deg, #38bdf8, #a78bfa)' }}
+              style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
             >
               {t.portfolio.contactLab}
               <HiArrowRight className="h-4 w-4" />

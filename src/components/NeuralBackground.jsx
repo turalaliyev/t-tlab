@@ -20,7 +20,6 @@ export default function NeuralBackground() {
     class Node {
       constructor() {
         this.reset();
-        // Start anywhere, not just off-screen
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
       }
@@ -56,7 +55,6 @@ export default function NeuralBackground() {
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.fill();
-        // soft outer ring
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r + 2.5, 0, Math.PI * 2);
         ctx.strokeStyle = this.color;
