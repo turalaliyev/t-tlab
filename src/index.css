@@ -6,9 +6,10 @@
   body {
     background-color: #060a12;
     color: #e2e8f0;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Orbitron', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.01em;
   }
 
   html {
@@ -17,6 +18,11 @@
 
   * {
     box-sizing: border-box;
+  }
+
+  ::selection {
+    background: rgba(56, 189, 248, 0.28);
+    color: #f8fafc;
   }
 }
 
@@ -51,5 +57,94 @@
   .dot-grid {
     background-image: radial-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px);
     background-size: 32px 32px;
+  }
+
+  .scanline-overlay {
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    animation: scanlineDrift 8s linear infinite;
+  }
+
+  .cyber-float {
+    animation: cyberFloat 9s ease-in-out infinite;
+  }
+
+  .cyber-pulse {
+    animation: cyberPulse 3.2s ease-in-out infinite;
+  }
+
+  .grid-drift {
+    animation: gridDrift 28s linear infinite;
+  }
+
+  .neon-frame {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .neon-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    box-shadow: inset 0 0 25px rgba(56, 189, 248, 0.08);
+  }
+}
+
+@keyframes cyberFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes cyberPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.65;
+    filter: blur(1px);
+  }
+}
+
+@keyframes gridDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(40px, 40px, 0);
+  }
+}
+
+@keyframes scanlineDrift {
+  0% {
+    transform: translateY(-10%);
+  }
+  100% {
+    transform: translateY(10%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanline-overlay,
+  .cyber-float,
+  .cyber-pulse,
+  .grid-drift,
+  .glass,
+  .glass-hover {
+    animation: none !important;
+    transition: none !important;
   }
 }

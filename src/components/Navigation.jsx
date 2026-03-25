@@ -87,7 +87,7 @@ const Navigation = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: hidden ? '-100%' : 0, opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`fixed top-0 left-0 right-0 z-50 ${
+      className={`fixed top-0 left-0 right-0 z-50 neon-frame ${
         scrolled
           ? 'bg-brand-bg/90 backdrop-blur-xl border-b border-brand-border shadow-lg shadow-black/20'
           : 'bg-transparent'
@@ -98,29 +98,30 @@ const Navigation = () => {
 
           {/* Logo */}
           <Link to="/" onClick={closeMobileMenu}
-            className="font-serif text-xl font-semibold text-white hover:text-neon-blue transition-colors shrink-0">
+            className="text-xl font-semibold text-white hover:text-neon-blue transition-colors shrink-0 tracking-[0.08em] uppercase">
             22 <span className="text-gradient-blue">Lab</span>
           </Link>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`text-sm font-medium transition-colors relative pb-0.5 ${
-                  isActive(item.path) ? 'text-neon-blue' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {item.label}
-                {isActive(item.path) && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute inset-x-0 bottom-0 h-px rounded"
-                    style={{ background: 'linear-gradient(90deg, #38bdf8, #a78bfa)' }}
-                  />
-                )}
-              </Link>
+              <motion.div key={item.path} whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                <Link
+                  to={item.path}
+                  className={`text-sm font-medium transition-colors relative pb-0.5 ${
+                    isActive(item.path) ? 'text-neon-blue' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {item.label}
+                  {isActive(item.path) && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute inset-x-0 bottom-0 h-px rounded"
+                      style={{ background: 'linear-gradient(90deg, #38bdf8, #a78bfa)' }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
             ))}
           </div>
 

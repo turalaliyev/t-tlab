@@ -1,6 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { HiArrowRight, HiArrowUpRight } from 'react-icons/hi2';
+import { motion, AnimatePresence } from 'framer-motion';
+import { HiArrowRight, HiArrowUpRight, HiArrowUp } from 'react-icons/hi2';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations/translations';
 import NeuralBackground from '../components/NeuralBackground';
@@ -107,10 +108,28 @@ const STATS = [
 ];
 
 
+const SCROLL_TOP_THRESHOLD = 0.8; // show button after scrolling past ~80% of viewport
+
 export default function Home() {
   const { language } = useLanguage();
   const t = translations[language] || translations.en;
   const loc = (obj) => (obj && obj[language]) || obj?.en || '';
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const checkScroll = () => {
+      const threshold = window.innerHeight * SCROLL_TOP_THRESHOLD;
+      setShowScrollTop(window.scrollY > threshold);
+    };
+    checkScroll();
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    return () => window.removeEventListener('scroll', checkScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const projects = [
     {
       id: 1,
@@ -408,13 +427,27 @@ export default function Home() {
                 <HiArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
-            <a href="mailto:tural.aliyev555@gmail.com"
-              className="text-sm text-slate-500 hover:text-neon-blue transition-colors underline underline-offset-4">
-              tural.aliyev555@gmail.com
-            </a>
           </div>
         </motion.div>
       </section>
+
+      {/* Scroll to top — bottom right, visible after leaving hero */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            type="button"
+            aria-label="Scroll to top"
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full border border-white/15 bg-brand-surface/90 backdrop-blur-sm text-slate-300 hover:text-white hover:border-neon-blue/50 hover:bg-neon-blue/10 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+          >
+            <HiArrowUp className="h-5 w-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
     </div>
   );

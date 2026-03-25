@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { LanguageProvider } from './contexts/LanguageContext';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
@@ -17,9 +18,19 @@ function App() {
         <div className="min-h-screen bg-brand-bg relative">
           {/* Global animated background (all pages) */}
           <div className="fixed inset-0 z-0 overflow-hidden">
-            <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
+            <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none grid-drift" />
+            <div className="absolute inset-0 scanline-overlay opacity-40 pointer-events-none" />
+            <div className="absolute -top-28 left-[15%] w-[34rem] h-[34rem] rounded-full pointer-events-none cyber-pulse"
+              style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.16) 0%, transparent 62%)' }} />
+            <div className="absolute -bottom-32 right-[12%] w-[30rem] h-[30rem] rounded-full pointer-events-none cyber-float"
+              style={{ background: 'radial-gradient(circle, rgba(167,139,250,0.16) 0%, transparent 64%)' }} />
           </div>
-          <div className="relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10"
+          >
             <Navigation />
             <main>
               <Routes>
@@ -31,7 +42,7 @@ function App() {
               </Routes>
             </main>
             <Footer />
-          </div>
+          </motion.div>
         </div>
       </Router>
     </LanguageProvider>

@@ -22,9 +22,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Orbitron', 'system-ui', 'sans-serif'],
+        serif: ['Orbitron', 'system-ui', 'sans-serif'],
+        mono: ['Orbitron', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       boxShadow: {
         neon: '0 0 24px rgba(56,189,248,0.4), 0 0 64px rgba(56,189,248,0.15)',
