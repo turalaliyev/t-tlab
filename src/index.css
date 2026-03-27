@@ -87,6 +87,10 @@
     overflow: hidden;
   }
 
+  nav.neon-frame {
+    overflow: visible;
+  }
+
   .neon-frame::after {
     content: '';
     position: absolute;
