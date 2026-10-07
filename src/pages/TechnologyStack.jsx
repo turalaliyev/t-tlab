@@ -12,8 +12,7 @@ export default function TechnologyStack() {
 
   return (
     <>
-      <section className="relative overflow-hidden pt-36 pb-16 sm:pt-44">
-        <div className="absolute inset-0 bg-grid" aria-hidden="true" />
+      <section className="relative pt-36 pb-16 sm:pt-44">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}

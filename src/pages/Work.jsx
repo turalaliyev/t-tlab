@@ -174,9 +174,9 @@ export default function Work() {
       </section>
 
       <CtaBlock
-        title={t.portfolio.ctaTitle}
-        description={t.portfolio.ctaDesc}
-        primary={t.portfolio.cta}
+        title={w.cta.title}
+        description={w.cta.description}
+        primary={w.cta.primary}
         secondary={t.home.cta.secondary}
       />
     </>

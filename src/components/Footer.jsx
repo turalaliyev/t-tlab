@@ -9,7 +9,7 @@ const Footer = () => {
   const company = [
     { to: '/services', label: t.nav.services },
     { to: '/work', label: t.nav.work },
-    { to: '/#process', label: t.nav.process },
+    { to: '/process', label: t.nav.process },
     { to: '/stack', label: t.nav.stack },
     { to: '/contact', label: t.nav.contact },
   ];

@@ -52,10 +52,6 @@
     @apply btn bg-fg text-ink-950 hover:bg-white active:scale-[0.98];
   }
 
-  .btn-accent {
-    @apply btn bg-accent-strong text-white hover:bg-accent active:scale-[0.98];
-  }
-
   .btn-ghost {
     @apply btn border border-white/15 text-fg hover:border-white/35 hover:bg-white/[0.04] active:scale-[0.98];
   }
@@ -86,14 +82,22 @@
     -webkit-text-fill-color: transparent;
   }
 
-  /* Fine line grid that fades out toward the edges */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+  /* Topographic contour lines (assets/contours.svg, made by scripts/generate-contours.py).
+     Page version: fixed scale anchored to the top, so it looks the same on every page. */
+  .bg-contours {
+    background-image: url('./assets/contours.svg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: max(1600px, 100%) auto;
+    mask-image: radial-gradient(ellipse 1100px 760px at 60% 120px, #000 35%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 1100px 760px at 60% 120px, #000 35%, transparent 100%);
+  }
+
+  /* Panel version: fills a self-contained card (CTA block, app showcase) */
+  .bg-contours-panel {
+    background: url('./assets/contours.svg') center / cover no-repeat;
+    mask-image: radial-gradient(ellipse 80% 75% at 50% 40%, #000 35%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 40%, #000 35%, transparent 100%);
   }
 
   .mask-fade-x {

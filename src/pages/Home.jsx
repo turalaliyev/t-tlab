@@ -22,12 +22,6 @@ const WHY_ICONS = [
 /* ───────────────────────── Hero ───────────────────────── */
 const Hero = ({ t }) => (
   <section className="relative overflow-hidden pt-28 sm:pt-36 pb-20 sm:pb-28">
-    <div className="absolute inset-0 bg-grid" aria-hidden="true" />
-    <div
-      className="absolute left-1/2 top-0 h-[560px] w-[1100px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-60 blur-3xl"
-      style={{ background: 'radial-gradient(closest-side, rgba(91,124,250,0.35), rgba(167,139,250,0.12) 60%, transparent)' }}
-      aria-hidden="true"
-    />
 
     <div className="container-page relative grid items-center gap-16 lg:grid-cols-12">
       <div className="lg:col-span-6">
@@ -201,7 +195,15 @@ const Work = ({ t }) => (
 const Process = ({ t }) => (
   <section id="process" className="relative border-t border-line bg-ink-900/40 py-24 sm:py-32">
     <div className="container-page">
-      <SectionHeader eyebrow={t.home.process.eyebrow} title={t.home.process.title} description={t.home.process.description} />
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <SectionHeader eyebrow={t.home.process.eyebrow} title={t.home.process.title} description={t.home.process.description} />
+        <Reveal>
+          <Link to="/process" className="btn-ghost shrink-0">
+            {t.home.process.more}
+            <HiArrowRight className="h-4 w-4" />
+          </Link>
+        </Reveal>
+      </div>
       <ol className="relative mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
         <div
           className="absolute left-0 right-0 top-[1.4rem] hidden h-px lg:block"

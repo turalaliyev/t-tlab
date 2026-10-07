@@ -1,4 +1,5 @@
 import { details } from './details';
+import { processPage } from './process';
 
 const base = {
   en: {
@@ -81,6 +82,7 @@ const base = {
         eyebrow: 'Process',
         title: 'How a project runs.',
         description: 'Four stages, clear deliverables at each one, and no surprises on the invoice.',
+        more: 'See the full process',
         steps: [
           {
             title: 'Discovery',
@@ -191,14 +193,6 @@ const base = {
         desc: 'Corporate website for a Quba fruit producer, presenting its products, storage and sorting services and photo gallery.',
       },
     ],
-    portfolio: {
-      eyebrow: 'Work',
-      title: 'Products we have shipped.',
-      description: 'Each one went from brief to launch with the same small team. Click through to see them live.',
-      ctaTitle: 'Your project could be next.',
-      ctaDesc: 'Send us a short brief and we will come back with questions, a timeline and an estimate.',
-      cta: 'Start a project',
-    },
     stack: {
       eyebrow: 'Technology',
       title: 'A modern stack, chosen per project.',
@@ -228,7 +222,6 @@ const base = {
       phone: 'Phone / WhatsApp',
       location: 'Location',
       locationValue: 'Remote, working worldwide',
-      socials: 'Elsewhere',
       nextTitle: 'What happens next',
       next: [
         'We read your brief and reply within 24 hours.',
@@ -347,6 +340,7 @@ const base = {
         eyebrow: 'Процесс',
         title: 'Как проходит проект.',
         description: 'Четыре этапа, понятный результат на каждом и никаких сюрпризов в счёте.',
+        more: 'Подробнее о процессе',
         steps: [
           {
             title: 'Анализ',
@@ -457,14 +451,6 @@ const base = {
         desc: 'Корпоративный сайт производителя фруктов из Губы: продукция, услуги хранения и сортировки, фотогалерея.',
       },
     ],
-    portfolio: {
-      eyebrow: 'Работы',
-      title: 'Проекты, которые мы запустили.',
-      description: 'Каждый прошёл путь от ТЗ до запуска с одной и той же небольшой командой. Откройте их вживую.',
-      ctaTitle: 'Следующим может быть ваш проект.',
-      ctaDesc: 'Пришлите короткое описание, и мы вернёмся с вопросами, сроками и оценкой.',
-      cta: 'Обсудить проект',
-    },
     stack: {
       eyebrow: 'Технологии',
       title: 'Современный стек под каждую задачу.',
@@ -494,7 +480,6 @@ const base = {
       phone: 'Телефон / WhatsApp',
       location: 'Где мы',
       locationValue: 'Удалённо, работаем по всему миру',
-      socials: 'Мы в сетях',
       nextTitle: 'Что дальше',
       next: [
         'Изучаем ваш запрос и отвечаем в течение 24 часов.',
@@ -613,6 +598,7 @@ const base = {
         eyebrow: 'Proses',
         title: 'Layihə necə gedir.',
         description: 'Dörd mərhələ, hər birində aydın nəticə və hesabda heç bir sürpriz yoxdur.',
+        more: 'Proses haqqında ətraflı',
         steps: [
           {
             title: 'Araşdırma',
@@ -723,14 +709,6 @@ const base = {
         desc: 'Quba meyvə istehsalçısı üçün məhsulları, saxlama və çeşidləmə xidmətlərini və foto qalereyanı təqdim edən korporativ sayt.',
       },
     ],
-    portfolio: {
-      eyebrow: 'İşlər',
-      title: 'Buraxdığımız məhsullar.',
-      description: 'Hər biri tapşırıqdan buraxılışa qədər eyni kiçik komanda ilə hazırlanıb. Canlı baxmaq üçün açın.',
-      ctaTitle: 'Növbəti layihə sizinki ola bilər.',
-      ctaDesc: 'Qısa təsvir göndərin, suallar, müddət və qiymət təxmini ilə qayıdaq.',
-      cta: 'Layihəni müzakirə et',
-    },
     stack: {
       eyebrow: 'Texnologiyalar',
       title: 'Hər layihəyə uyğun müasir stek.',
@@ -760,7 +738,6 @@ const base = {
       phone: 'Telefon / WhatsApp',
       location: 'Məkan',
       locationValue: 'Uzaqdan, bütün dünya ilə işləyirik',
-      socials: 'Sosial şəbəkələr',
       nextTitle: 'Sonra nə olur',
       next: [
         'Müraciətinizi oxuyub 24 saat ərzində cavab veririk.',
@@ -801,5 +778,5 @@ const base = {
 };
 
 export const translations = Object.fromEntries(
-  Object.entries(base).map(([lang, strings]) => [lang, { ...strings, ...details[lang] }]),
+  Object.entries(base).map(([lang, strings]) => [lang, { ...strings, ...details[lang], process: processPage[lang] }]),
 );

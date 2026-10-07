@@ -75,7 +75,7 @@ export const CtaBlock = ({ title, description, primary, secondary }) => (
   <section className="py-24 sm:py-32">
     <div className="container-page">
       <Reveal className="relative overflow-hidden rounded-3xl border border-line bg-ink-900 px-6 py-16 text-center sm:px-16 sm:py-24">
-        <div className="absolute inset-0 bg-grid opacity-60" aria-hidden="true" />
+        <div className="absolute inset-0 bg-contours-panel opacity-60" aria-hidden="true" />
         <div
           className="absolute left-1/2 top-full h-[420px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
           style={{ background: 'radial-gradient(closest-side, rgba(91,124,250,0.45), transparent)' }}
@@ -104,8 +104,7 @@ export const CtaBlock = ({ title, description, primary, secondary }) => (
 
 /* Top-of-page intro used by the inner pages */
 export const PageHeader = ({ eyebrow, title, description, children }) => (
-  <section className="relative overflow-hidden pt-36 pb-16 sm:pt-44">
-    <div className="absolute inset-0 bg-grid" aria-hidden="true" />
+  <section className="relative pt-36 pb-16 sm:pt-44">
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}

@@ -35,7 +35,7 @@ export const SectionHeader = ({ eyebrow, title, description, align = 'left', cla
 );
 
 /* "22." monogram on a 32-unit grid. Same geometry as public/favicon.svg */
-export const LogoMark = ({ className = 'h-8 w-8' }) => (
+const LogoMark = ({ className = 'h-8 w-8' }) => (
   <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
     <rect width="32" height="32" rx="6" className="fill-fg" />
     <path
@@ -59,4 +59,16 @@ export const LiveDot = () => (
     <span className="absolute inline-flex h-full w-full rounded-full bg-accent-mint opacity-60 motion-safe:animate-ping" />
     <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-mint" />
   </span>
+);
+
+/* Site-wide top backdrop: contour lines + soft glow, identical on every page.
+   Rendered once in App behind the page content and fades out as the page scrolls. */
+export const PageBackdrop = () => (
+  <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[1000px] overflow-hidden" aria-hidden="true">
+    <div className="absolute inset-0 bg-contours" />
+    <div
+      className="absolute left-1/2 top-0 h-[560px] w-[1100px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-60 blur-3xl"
+      style={{ background: 'radial-gradient(closest-side, rgba(91,124,250,0.35), rgba(167,139,250,0.12) 60%, transparent)' }}
+    />
+  </div>
 );

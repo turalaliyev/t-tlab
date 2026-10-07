@@ -46,8 +46,7 @@ export default function Contact() {
   ];
 
   return (
-    <section className="relative overflow-hidden pt-36 pb-24 sm:pt-44">
-      <div className="absolute inset-0 bg-grid" aria-hidden="true" />
+    <section className="relative pt-36 pb-24 sm:pt-44">
       <div className="container-page relative grid gap-14 lg:grid-cols-12">
         {/* Left: intro + channels */}
         <motion.div

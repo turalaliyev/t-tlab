@@ -11,9 +11,7 @@ export default {
           950: '#08090c', // page background
           900: '#0d0f14', // raised surface
           850: '#12151c', // card
-          800: '#181c25', // card hover
           700: '#232836', // border strong
-          600: '#2c3242',
         },
         line: 'rgba(255,255,255,0.08)',
         fg: {
@@ -24,12 +22,8 @@ export default {
         accent: {
           DEFAULT: '#7c9cff',
           strong: '#4062e6', // white text 5.2:1
-          violet: '#a78bfa',
           mint: '#5eead4',
         },
-        // Legacy aliases used by CaseStudy.jsx
-        brand: { bg: '#08090c', surface: '#0d0f14', card: '#12151c', border: '#232836' },
-        neon: { blue: '#7c9cff', purple: '#a78bfa', cyan: '#5eead4', green: '#5eead4', pink: '#f0abfc' },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],

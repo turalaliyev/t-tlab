@@ -1,6 +1,6 @@
 /* Device frames for showcasing project screenshots */
 
-export const BrowserFrame = ({ domain, image, alt, className = '', imgClassName = '' }) => (
+const BrowserFrame = ({ domain, image, alt, className = '', imgClassName = '' }) => (
   <div className={`overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-2xl shadow-black/50 ${className}`}>
     <div className="flex items-center gap-3 border-b border-line bg-ink-850 px-4 py-3">
       <div className="flex gap-1.5" aria-hidden="true">
@@ -26,7 +26,7 @@ export const BrowserFrame = ({ domain, image, alt, className = '', imgClassName 
 );
 
 /* Phone bezel around a full-screen app screenshot (status bar included in the image) */
-export const PhoneFrame = ({ image, alt, className = '' }) => (
+const PhoneFrame = ({ image, alt, className = '' }) => (
   <div className={`rounded-[1.6rem] border border-white/15 bg-ink-950 p-[3%] shadow-2xl shadow-black/60 ${className}`}>
     <div className="aspect-[9/20] overflow-hidden rounded-[1.25rem] bg-ink-850">
       <img src={image} alt={alt} loading="lazy" decoding="async" className="h-full w-full object-cover object-top" />
@@ -36,9 +36,9 @@ export const PhoneFrame = ({ image, alt, className = '' }) => (
 
 /* Two phones on a lit panel, sized to match BrowserFrame's 16:10 footprint.
    The phones run off the bottom edge so the top of each screen reads large. */
-export const AppShowcase = ({ front, back, alt, glow = 'rgba(45,160,170,0.35)', className = '', imgClassName = '' }) => (
+const AppShowcase = ({ front, back, alt, glow = 'rgba(45,160,170,0.35)', className = '', imgClassName = '' }) => (
   <div className={`relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-2xl shadow-black/50 ${className}`}>
-    <div className="absolute inset-0 bg-grid opacity-70" aria-hidden="true" />
+    <div className="absolute inset-0 bg-contours-panel opacity-70" aria-hidden="true" />
     <div
       className="absolute left-1/2 top-1/2 h-[90%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
       style={{ background: `radial-gradient(closest-side, ${glow}, transparent)` }}

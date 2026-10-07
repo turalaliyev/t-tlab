@@ -165,15 +165,17 @@ export const details = {
         'Every project below went from brief to launch with the same small team. Each one is live, so you can see it for yourself.',
       filters: { all: 'All', mobile: 'Mobile apps', corporate: 'Corporate', retail: 'Retail & fashion', media: 'Media' },
       labels: {
-        industry: 'Industry',
         scope: 'What we did',
         features: 'Key features',
         stack: 'Stack',
         languages: 'Languages',
         visit: 'Visit site',
         platforms: 'Platforms',
-        appStore: 'App Store',
-        googlePlay: 'Google Play',
+      },
+      cta: {
+        title: 'Your project could be next.',
+        description: 'Send us a short brief and we will come back with questions, a timeline and an estimate.',
+        primary: 'Start a project',
       },
       cases: [
         {
@@ -431,15 +433,17 @@ export const details = {
         'Каждый проект ниже прошёл путь от ТЗ до запуска с одной и той же небольшой командой. Все они работают — можно открыть и посмотреть.',
       filters: { all: 'Все', mobile: 'Мобильные приложения', corporate: 'Корпоративные', retail: 'Ритейл и мода', media: 'Медиа' },
       labels: {
-        industry: 'Отрасль',
         scope: 'Что мы сделали',
         features: 'Ключевые функции',
         stack: 'Стек',
         languages: 'Языки',
         visit: 'Открыть сайт',
         platforms: 'Платформы',
-        appStore: 'App Store',
-        googlePlay: 'Google Play',
+      },
+      cta: {
+        title: 'Следующим может быть ваш проект.',
+        description: 'Пришлите короткое описание, и мы вернёмся с вопросами, сроками и оценкой.',
+        primary: 'Обсудить проект',
       },
       cases: [
         {
@@ -697,15 +701,17 @@ export const details = {
         'Aşağıdakı hər layihə tapşırıqdan buraxılışa qədər eyni kiçik komanda ilə hazırlanıb. Hamısı işləyir — açıb baxa bilərsiniz.',
       filters: { all: 'Hamısı', mobile: 'Mobil tətbiqlər', corporate: 'Korporativ', retail: 'Pərakəndə və moda', media: 'Media' },
       labels: {
-        industry: 'Sahə',
         scope: 'Nə etdik',
         features: 'Əsas funksiyalar',
         stack: 'Stek',
         languages: 'Dillər',
         visit: 'Sayta keç',
         platforms: 'Platformalar',
-        appStore: 'App Store',
-        googlePlay: 'Google Play',
+      },
+      cta: {
+        title: 'Növbəti layihə sizinki ola bilər.',
+        description: 'Qısa təsvir göndərin, suallar, müddət və qiymət təxmini ilə qayıdaq.',
+        primary: 'Layihəni müzakirə et',
       },
       cases: [
         {
