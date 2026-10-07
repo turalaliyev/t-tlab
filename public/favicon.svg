@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .tile { fill: #0d0f14; } .ink { fill: #f4f5f7; }
+    @media (prefers-color-scheme: dark) { .tile { fill: #f4f5f7; } .ink { fill: #0d0f14; } }
+  </style>
+  <rect class="tile" width="32" height="32" rx="6"/>
+  <path class="ink" d="M5 7h8v10H8v5h5v3H5V14h5v-4H5zM16 7h8v10h-5v5h5v3h-8V14h5v-4h-5z"/>
+  <rect x="25" y="22" width="3" height="3" fill="#5b7cfa"/>
+</svg>

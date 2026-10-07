@@ -1,221 +1,197 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { HiArrowRight, HiGlobeAlt } from 'react-icons/hi2';
-import { HiMail } from 'react-icons/hi';
-import { FaWhatsapp, FaTelegramPlane, FaInstagram } from 'react-icons/fa';
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../translations/translations';
-import NeuralBackground from '../components/NeuralBackground';
+import { HiArrowRight, HiOutlineEnvelope, HiOutlinePhone, HiOutlineGlobeEuropeAfrica } from 'react-icons/hi2';
+import { useT } from '../contexts/LanguageContext';
+import { EASE, LiveDot } from '../components/ui';
+import Select from '../components/Select';
+import { CONTACT, SOCIALS } from '../data/site';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: (i = 0) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 },
-  }),
-};
-
-const SOCIALS = [
-  { href: 'mailto:tural.aliyev555@gmail.com', icon: HiMail, label: 'Email' },
-  { href: 'https://wa.me/994508747905', icon: FaWhatsapp, label: 'WhatsApp' },
-  { href: 'https://t.me/tural_1995_aliyev', icon: FaTelegramPlane, label: 'Telegram' },
-  { href: 'https://www.instagram.com/', icon: FaInstagram, label: 'Instagram' },
-];
+const TYPE_KEYS = ['webapp', 'mobile', 'website', 'ecommerce', 'design', 'landing', 'other'];
 
 export default function Contact() {
-  const { language } = useLanguage();
-  const t = translations[language] || translations.en;
+  const t = useT();
+  const c = t.contact;
 
-  const [formData, setFormData] = useState({
-    name: '', email: '', projectType: '', details: '', requireNDA: false,
+  const [form, setForm] = useState({
+    name: '', email: '', projectType: '', budget: '', details: '', requireNDA: false,
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`New project inquiry from ${formData.name || 'Website Contact'}`);
+    const subject = encodeURIComponent(`New project inquiry from ${form.name || 'Website Contact'}`);
     const body = encodeURIComponent([
-      `Name: ${formData.name}`,
-      `Email: ${formData.email}`,
-      `Project type: ${formData.projectType}`,
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      `Project type: ${c.types[form.projectType] || form.projectType}`,
+      `Budget: ${form.budget || '-'}`,
       '',
       'Project details:',
-      formData.details,
+      form.details,
       '',
-      `NDA required: ${formData.requireNDA ? 'Yes' : 'No'}`,
+      `NDA required: ${form.requireNDA ? 'Yes' : 'No'}`,
     ].join('\n'));
-    window.location.href = `mailto:tural.aliyev555@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
   };
 
-  const inputClass = `w-full px-4 py-3 rounded bg-brand-surface border border-brand-border text-slate-200 placeholder-slate-600
-    focus:outline-none focus:border-neon-blue/50 transition-colors`;
+  const channels = [
+    { icon: HiOutlineEnvelope, label: c.email, value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+    { icon: HiOutlinePhone, label: c.phone, value: CONTACT.phone, href: CONTACT.phoneHref },
+    { icon: HiOutlinePhone, label: c.phone, value: CONTACT.phone2, href: CONTACT.phone2Href },
+    { icon: HiOutlineGlobeEuropeAfrica, label: c.location, value: c.locationValue },
+  ];
 
   return (
-    <div className="min-h-screen bg-brand-bg text-slate-100 overflow-x-hidden pt-24 pb-20 px-6">
-      <NeuralBackground />
-      <div className="max-w-6xl mx-auto">
-
-        {/* Header */}
+    <section className="relative overflow-hidden pt-36 pb-24 sm:pt-44">
+      <div className="absolute inset-0 bg-grid" aria-hidden="true" />
+      <div className="container-page relative grid gap-14 lg:grid-cols-12">
+        {/* Left: intro + channels */}
         <motion.div
-          variants={fadeUp} initial="hidden" animate="show"
-          className="mb-14 text-center"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="lg:col-span-5"
         >
-          <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-4">
-            {t.contact.connect}
-          </p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight mb-4">
-            {t.contact.title}
-          </h1>
-          <p className="text-slate-400 max-w-xl mx-auto">{t.contact.description}</p>
+          <p className="eyebrow">{c.eyebrow}</p>
+          <h1 className="h-display mt-5 text-5xl sm:text-6xl">{c.title}</h1>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-fg-muted">{c.description}</p>
+
+          <ul className="mt-12 space-y-6">
+            {channels.map(({ icon: Icon, label, value, href }) => (
+              <li key={value} className="flex items-start gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-line bg-white/[0.03] text-accent">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-sm text-fg-subtle">{label}</p>
+                  {href ? (
+                    <a href={href} className="mt-0.5 block break-all text-fg hover:text-accent transition-colors">{value}</a>
+                  ) : (
+                    <p className="mt-0.5 text-fg">{value}</p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-10 flex gap-2">
+            {SOCIALS.map(({ href, icon: Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="grid h-11 w-11 place-items-center rounded-full border border-line text-fg-muted hover:border-white/30 hover:text-fg transition-colors"
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-12 border-t border-line pt-10">
+            <p className="flex items-center gap-2.5 font-medium text-fg">
+              <LiveDot />
+              {c.nextTitle}
+            </p>
+            <ol className="mt-6 space-y-4">
+              {c.next.map((step, i) => (
+                <li key={step} className="flex gap-4 text-fg-muted">
+                  <span className="font-mono text-sm text-accent">{String(i + 1).padStart(2, '0')}</span>
+                  {step}
+                </li>
+              ))}
+            </ol>
+          </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-10">
+        {/* Right: form */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+          className="lg:col-span-7"
+        >
+          <div className="card p-6 sm:p-10">
+            <h2 className="text-2xl font-semibold tracking-tight text-fg">{c.formTitle}</h2>
 
-          {/* Left – contact info */}
-          <motion.div
-            variants={fadeUp} initial="hidden" animate="show" custom={1}
-            className="space-y-8"
-          >
-            {/* Email */}
-            <div>
-              <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-2">{t.contact.email}</p>
-              <a href="mailto:tural.aliyev555@gmail.com"
-                className="text-slate-200 hover:text-neon-blue transition-colors">
-                tural.aliyev555@gmail.com
-              </a>
-            </div>
-
-            {/* Phone */}
-            <div>
-              <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-2">{t.contact.phone}</p>
-              <a href="tel:+994508747905" className="text-slate-200 hover:text-neon-blue transition-colors">
-                +994 50 874 79 05
-              </a>
-            </div>
-
-            {/* Location */}
-            <div>
-              <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-2">{t.contact.location}</p>
-              <div className="flex items-center gap-2 text-white">
-                <HiGlobeAlt className="h-5 w-5 text-neon-blue/60" />
-                <span>{t.contact.remoteGlobal}</span>
-              </div>
-            </div>
-
-            {/* Socials */}
-            <div>
-              <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-3">{t.contact.socials}</p>
-              <div className="flex gap-3">
-                {SOCIALS.map(({ href, icon: Icon, label }) => (
-                  <motion.a
-                    key={label}
-                    href={href}
-                    target={href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    whileHover={{ scale: 1.12, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="w-11 h-11 rounded border border-brand-border bg-brand-card flex items-center justify-center text-slate-400 hover:border-neon-blue/50 hover:text-neon-blue transition-colors duration-200"
-                  >
-                    <Icon className="h-5 w-5" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-
-            {/* Decorative card */}
-            <div className="rounded border border-brand-border bg-brand-card/40 p-6 mt-4">
-              <p className="text-sm text-slate-400 leading-relaxed">
-                {t.contact.description}
-              </p>
-              <div className="mt-4 h-px w-full"
-                style={{ background: 'linear-gradient(90deg, #38bdf8, #a78bfa, transparent)' }} />
-            </div>
-          </motion.div>
-
-          {/* Right – form */}
-          <motion.div
-            variants={fadeUp} initial="hidden" animate="show" custom={2}
-          >
-            <div className="rounded border border-brand-border bg-brand-card/60 backdrop-blur-sm p-8">
-              <h2 className="font-serif text-2xl font-semibold text-white mb-7">
-                {t.contact.formTitle}
-              </h2>
-
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">
-                      {t.contact.fullName}
-                    </label>
-                    <input type="text" id="name" name="name" value={formData.name}
-                      onChange={handleChange} placeholder="John Doe"
-                      className={inputClass} required />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">
-                      {t.contact.emailAddress}
-                    </label>
-                    <input type="email" id="email" name="email" value={formData.email}
-                      onChange={handleChange} placeholder="john@example.com"
-                      className={inputClass} required />
-                  </div>
-                </div>
-
+            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="projectType" className="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">
-                    {t.contact.projectType}
-                  </label>
-                  <select id="projectType" name="projectType" value={formData.projectType}
-                    onChange={handleChange}
-                    className={inputClass} required>
-                    <option value="" className="bg-brand-bg">{t.contact.selectOption}</option>
-                    <option value="ecommerce" className="bg-brand-bg">{t.contact.ecommerce}</option>
-                    <option value="saas" className="bg-brand-bg">{t.contact.saas}</option>
-                    <option value="web3" className="bg-brand-bg">{t.contact.web3}</option>
-                    <option value="design" className="bg-brand-bg">{t.contact.designSystem}</option>
-                    <option value="other" className="bg-brand-bg">{t.contact.other}</option>
-                  </select>
+                  <label htmlFor="name" className="label">{c.fullName}</label>
+                  <input id="name" name="name" type="text" autoComplete="name" required
+                    value={form.name} onChange={handleChange} className="field" />
                 </div>
-
                 <div>
-                  <label htmlFor="details" className="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">
-                    {t.contact.projectDetails}
-                  </label>
-                  <textarea id="details" name="details" value={formData.details}
-                    onChange={handleChange} placeholder={t.contact.projectDetailsPlaceholder}
-                    rows={5} className={`${inputClass} resize-none`} required />
+                  <label htmlFor="email" className="label">{c.emailAddress}</label>
+                  <input id="email" name="email" type="email" autoComplete="email" required
+                    value={form.email} onChange={handleChange} className="field" />
                 </div>
+              </div>
 
-                <div className="flex items-center gap-3">
-                  <input type="checkbox" id="requireNDA" name="requireNDA"
-                    checked={formData.requireNDA} onChange={handleChange}
-                    className="w-4 h-4 rounded border-brand-border bg-brand-surface accent-neon-blue" />
-                  <label htmlFor="requireNDA" className="text-sm text-slate-400">
-                    {t.contact.requireNDA}
-                  </label>
+              <fieldset>
+                <legend className="label">{c.projectType}</legend>
+                <div className="flex flex-wrap gap-2">
+                  {TYPE_KEYS.map((key) => {
+                    const checked = form.projectType === key;
+                    return (
+                      <label
+                        key={key}
+                        className={`cursor-pointer rounded-full border px-4 py-2.5 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+                          checked ? 'border-fg bg-fg text-ink-950' : 'border-ink-700 text-fg-muted hover:border-white/30 hover:text-fg'
+                        }`}
+                      >
+                        <input type="radio" name="projectType" value={key} checked={checked}
+                          onChange={handleChange} required className="sr-only" />
+                        {c.types[key]}
+                      </label>
+                    );
+                  })}
                 </div>
+              </fieldset>
 
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded text-white font-semibold text-sm transition-all"
-                  style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
-                >
-                  {t.contact.sendMessage}
-                  <HiArrowRight className="h-5 w-5" />
-                </motion.button>
-              </form>
-            </div>
-          </motion.div>
+              <div>
+                <label id="budget-label" htmlFor="budget" className="label">
+                  {c.budget} <span className="text-fg-subtle">({c.optional})</span>
+                </label>
+                <Select
+                  id="budget"
+                  labelledBy="budget-label"
+                  value={form.budget}
+                  onChange={(budget) => setForm((prev) => ({ ...prev, budget }))}
+                  options={c.budgets.map((b) => ({ value: b, label: b }))}
+                  placeholder={c.budgetPlaceholder}
+                />
+              </div>
 
-        </div>
+              <div>
+                <label htmlFor="details" className="label">{c.projectDetails}</label>
+                <textarea id="details" name="details" rows={5} required
+                  value={form.details} onChange={handleChange}
+                  placeholder={c.projectDetailsPlaceholder} className="field resize-y" />
+              </div>
+
+              <label className="flex cursor-pointer items-center gap-3 text-sm text-fg-muted">
+                <input type="checkbox" name="requireNDA" checked={form.requireNDA} onChange={handleChange}
+                  className="h-4 w-4 rounded border-ink-700 bg-ink-950 accent-accent-strong" />
+                {c.requireNDA}
+              </label>
+
+              <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                <button type="submit" className="btn-primary group sm:w-auto">
+                  {c.sendMessage}
+                  <HiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
+                <p className="text-sm text-fg-subtle">{c.formNote}</p>
+              </div>
+            </form>
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
 }

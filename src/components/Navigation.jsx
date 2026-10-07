@@ -1,68 +1,62 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiBars3, HiChevronDown } from 'react-icons/hi2';
-import { HiX } from 'react-icons/hi';
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../translations/translations';
+import { HiBars3, HiXMark, HiChevronDown, HiArrowUpRight } from 'react-icons/hi2';
+import { useLanguage, useT } from '../contexts/LanguageContext';
+import { Logo } from './ui';
+
+const LANGUAGES = [
+  { code: 'en', name: 'English' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'az', name: 'Azərbaycan' },
+];
 
 const Navigation = () => {
   const location = useLocation();
   const { language, changeLanguage } = useLanguage();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const t = useT();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
   const upScrollAccum = useRef(0);
-  const langMenuRef = useRef(null);
-
-  const t = translations[language];
+  const langRef = useRef(null);
 
   const navItems = [
-    { path: '/', label: t.nav.services },
-    { path: '/stack', label: t.nav.stack },
-    { path: '/portfolio', label: t.nav.portfolio },
-    { path: '/contact', label: t.nav.contact },
+    { to: '/services', label: t.nav.services },
+    { to: '/work', label: t.nav.work },
+    { to: '/#process', label: t.nav.process },
+    { to: '/stack', label: t.nav.stack },
+    { to: '/contact', label: t.nav.contact },
   ];
 
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-    { code: 'az', name: 'Azərbaycan', flag: '🇦🇿' },
-  ];
+  const isActive = (to) => {
+    const [path, hash] = to.split('#');
+    if (hash) return location.pathname === '/' && location.hash === `#${hash}`;
+    return location.pathname.startsWith(path);
+  };
 
-  const currentLang = languages.find(l => l.code === language) || languages[0];
-  const isActive = (path) =>
-    path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
-
+  // Hide on scroll down, reveal after a short scroll up
   useEffect(() => {
-    const SHOW_THRESHOLD = 32; // 2rem — min upward scroll to reveal nav
-    const HIDE_AFTER = 80;     // px from top before hiding kicks in
+    const SHOW_THRESHOLD = 32;
+    const HIDE_AFTER = 120;
 
     const onScroll = () => {
       const current = window.scrollY;
       const delta = current - lastScrollY.current;
-
-      setScrolled(current > 20);
+      setScrolled(current > 12);
 
       if (current <= HIDE_AFTER) {
-        // Always visible near the top
         setHidden(false);
         upScrollAccum.current = 0;
       } else if (delta > 0) {
-        // Scrolling down — hide immediately and reset accumulator
         upScrollAccum.current = 0;
         setHidden(true);
       } else {
-        // Scrolling up — accumulate upward distance
         upScrollAccum.current += Math.abs(delta);
-        if (upScrollAccum.current >= SHOW_THRESHOLD) {
-          setHidden(false);
-        }
+        if (upScrollAccum.current >= SHOW_THRESHOLD) setHidden(false);
       }
-
       lastScrollY.current = current;
     };
 
@@ -71,156 +65,166 @@ const Navigation = () => {
   }, []);
 
   useEffect(() => {
-    const handleOutside = (e) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(e.target)) {
-        setIsLangMenuOpen(false);
-      }
+    if (!langOpen) return;
+    const onOutside = (e) => {
+      if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
     };
-    if (isLangMenuOpen) {
-      document.addEventListener('mousedown', handleOutside);
-      return () => document.removeEventListener('mousedown', handleOutside);
-    }
-  }, [isLangMenuOpen]);
+    const onKey = (e) => e.key === 'Escape' && setLangOpen(false);
+    document.addEventListener('mousedown', onOutside);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onOutside);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [langOpen]);
+
+  // Close the mobile menu on navigation
+  useEffect(() => setMenuOpen(false), [location.pathname, location.hash]);
+
+  const solid = scrolled || menuOpen;
 
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: hidden ? '-100%' : 0, opacity: hidden ? 0 : 1 }}
-      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`fixed top-0 left-0 right-0 z-50 neon-frame ${
-        scrolled
-          ? 'bg-brand-bg/90 backdrop-blur-xl border-b border-brand-border shadow-lg shadow-black/20'
-          : 'bg-transparent'
+    <motion.header
+      initial={false}
+      animate={{ y: hidden && !menuOpen ? '-100%' : 0 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300 border-b ${
+        solid ? 'bg-ink-950/80 backdrop-blur-xl border-line' : 'bg-transparent border-transparent'
       }`}
     >
-      <div className="w-full max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <nav className="container-page flex h-16 items-center justify-between gap-6" aria-label="Main">
+        <Logo />
 
-          {/* Logo */}
-          <Link to="/" onClick={closeMobileMenu}
-            className="text-xl font-semibold text-white hover:text-neon-blue transition-colors shrink-0 tracking-[0.08em] uppercase">
-            22 <span className="text-gradient-blue">Lab</span>
-          </Link>
-
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <motion.div key={item.path} whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-                <Link
-                  to={item.path}
-                  className={`text-sm font-medium transition-colors relative pb-0.5 ${
-                    isActive(item.path) ? 'text-neon-blue' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {item.label}
-                  {isActive(item.path) && (
-                    <motion.span
-                      layoutId="nav-underline"
-                      className="absolute inset-x-0 bottom-0 h-px rounded"
-                      style={{ background: 'linear-gradient(90deg, #38bdf8, #a78bfa)' }}
-                    />
-                  )}
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Right: lang + CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <div className="relative" ref={langMenuRef}>
-              <button
-                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-brand-border bg-brand-surface/50 text-slate-400 text-xs font-medium hover:border-neon-blue/40 hover:text-white transition-all"
+        {/* Desktop links */}
+        <ul className="hidden lg:flex items-center gap-1">
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <Link
+                to={item.to}
+                className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                  isActive(item.to) ? 'text-fg bg-white/[0.06]' : 'text-fg-muted hover:text-fg'
+                }`}
               >
-                <span>{currentLang.flag}</span>
-                <span>{currentLang.code.toUpperCase()}</span>
-                <HiChevronDown className={`h-3.5 w-3.5 transition-transform ${isLangMenuOpen ? 'rotate-180' : ''}`} />
-              </button>
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
 
-              <AnimatePresence>
-                {isLangMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.18 }}
-                    className="absolute right-0 mt-2 w-44 rounded overflow-hidden border border-brand-border bg-brand-card backdrop-blur-xl shadow-xl shadow-black/30 z-50"
-                  >
-                    {languages.map((lang) => (
+        <div className="flex items-center gap-2">
+          {/* Language */}
+          <div className="relative hidden sm:block" ref={langRef}>
+            <button
+              type="button"
+              onClick={() => setLangOpen((v) => !v)}
+              aria-haspopup="listbox"
+              aria-expanded={langOpen}
+              aria-label={t.nav.language}
+              className="flex h-10 items-center gap-1 rounded-full px-3 font-mono text-xs text-fg-muted hover:text-fg transition-colors"
+            >
+              {language.toUpperCase()}
+              <HiChevronDown className={`h-3.5 w-3.5 transition-transform ${langOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <AnimatePresence>
+              {langOpen && (
+                <motion.ul
+                  role="listbox"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }}
+                  transition={{ duration: 0.18 }}
+                  className="absolute right-0 mt-2 w-44 overflow-hidden rounded-xl border border-line bg-ink-900 p-1 shadow-2xl shadow-black/50"
+                >
+                  {LANGUAGES.map((lang) => (
+                    <li key={lang.code}>
                       <button
-                        key={lang.code}
-                        onClick={() => { changeLanguage(lang.code); setIsLangMenuOpen(false); }}
-                        className={`w-full text-left px-4 py-2.5 flex items-center gap-3 text-sm transition-colors ${
-                          language === lang.code
-                            ? 'bg-neon-blue/10 text-neon-blue'
-                            : 'text-slate-400 hover:bg-brand-surface hover:text-white'
+                        type="button"
+                        role="option"
+                        aria-selected={language === lang.code}
+                        onClick={() => { changeLanguage(lang.code); setLangOpen(false); }}
+                        className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                          language === lang.code ? 'bg-white/[0.06] text-fg' : 'text-fg-muted hover:bg-white/[0.04] hover:text-fg'
                         }`}
                       >
-                        <span>{lang.flag}</span>
-                        <span>{lang.name}</span>
+                        {lang.name}
+                        <span className="font-mono text-[11px] text-fg-subtle">{lang.code.toUpperCase()}</span>
                       </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    </li>
+                  ))}
+                </motion.ul>
+              )}
+            </AnimatePresence>
           </div>
 
-          {/* Mobile hamburger */}
+          <Link to="/contact" className="btn-primary hidden md:inline-flex h-10 px-5">
+            {t.nav.cta}
+            <HiArrowUpRight className="h-4 w-4" />
+          </Link>
+
+          {/* Mobile toggle */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
+            className="lg:hidden grid h-11 w-11 place-items-center rounded-full text-fg-muted hover:text-fg hover:bg-white/[0.05] transition-colors"
           >
-            {isMobileMenuOpen ? <HiX className="h-6 w-6" /> : <HiBars3 className="h-6 w-6" />}
+            {menuOpen ? <HiXMark className="h-6 w-6" /> : <HiBars3 className="h-6 w-6" />}
           </button>
         </div>
+      </nav>
 
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25 }}
-              className="md:hidden border-t border-brand-border bg-brand-bg/98 backdrop-blur-xl overflow-hidden"
-            >
-              <div className="px-2 py-4 space-y-1">
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            id="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0, transition: { duration: 0.18 } }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden overflow-hidden border-t border-line"
+          >
+            <div className="container-page py-6">
+              <ul className="space-y-1">
                 {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={closeMobileMenu}
-                    className={`block px-4 py-3 rounded text-sm font-medium transition-colors ${
-                      isActive(item.path)
-                        ? 'bg-neon-blue/10 text-neon-blue'
-                        : 'text-slate-400 hover:bg-brand-surface hover:text-white'
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                <div className="mt-4 pt-4 border-t border-brand-border">
-                  <p className="px-4 py-2 text-xs text-slate-600 uppercase font-mono">Language</p>
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => { changeLanguage(lang.code); closeMobileMenu(); }}
-                      className={`w-full text-left px-4 py-2.5 flex items-center gap-3 text-sm transition-colors ${
-                        language === lang.code ? 'text-neon-blue' : 'text-slate-400 hover:text-white'
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className={`block rounded-xl px-4 py-3.5 text-lg transition-colors ${
+                        isActive(item.to) ? 'bg-white/[0.06] text-fg' : 'text-fg-muted hover:text-fg'
                       }`}
                     >
-                      <span>{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex items-center gap-2 border-t border-line pt-6">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => changeLanguage(lang.code)}
+                    aria-pressed={language === lang.code}
+                    className={`h-10 rounded-full px-4 font-mono text-xs transition-colors ${
+                      language === lang.code ? 'bg-fg text-ink-950' : 'border border-line text-fg-muted'
+                    }`}
+                  >
+                    {lang.code.toUpperCase()}
+                  </button>
+                ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+              <Link to="/contact" className="btn-primary mt-6 w-full">
+                {t.nav.cta}
+                <HiArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 

@@ -1,50 +1,44 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { LanguageProvider } from './contexts/LanguageContext';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import { SmoothScroll } from './components/SmoothScroll';
 import Home from './pages/Home';
 import TechnologyStack from './pages/TechnologyStack';
-import Portfolio from './pages/Portfolio';
+import Services from './pages/Services';
+import Work from './pages/Work';
 import Contact from './pages/Contact';
 import CaseStudy from './pages/CaseStudy';
 
 function App() {
   return (
     <LanguageProvider>
-      <Router>
-        <ScrollToTop />
-        <div className="min-h-screen bg-brand-bg relative">
-          {/* Global animated background (all pages) */}
-          <div className="fixed inset-0 z-0 overflow-hidden">
-            <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none grid-drift" />
-            <div className="absolute inset-0 scanline-overlay opacity-40 pointer-events-none" />
-            <div className="absolute -top-28 left-[15%] w-[34rem] h-[34rem] rounded-full pointer-events-none cyber-pulse"
-              style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.16) 0%, transparent 62%)' }} />
-            <div className="absolute -bottom-32 right-[12%] w-[30rem] h-[30rem] rounded-full pointer-events-none cyber-float"
-              style={{ background: 'radial-gradient(circle, rgba(167,139,250,0.16) 0%, transparent 64%)' }} />
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10"
-          >
-            <Navigation />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/stack" element={<TechnologyStack />} />
-                <Route path="/portfolio" element={<Portfolio />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/case-study" element={<CaseStudy />} />
-              </Routes>
-            </main>
-            <Footer />
-          </motion.div>
-        </div>
-      </Router>
+      <MotionConfig reducedMotion="user">
+        <SmoothScroll>
+          <Router>
+            <ScrollToTop />
+            <div className="relative min-h-screen bg-ink-950 overflow-x-clip">
+              <div className="relative z-10 flex min-h-screen flex-col">
+                <Navigation />
+                <main className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/stack" element={<TechnologyStack />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/work" element={<Work />} />
+                    <Route path="/portfolio" element={<Navigate to="/work" replace />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/case-study" element={<CaseStudy />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </div>
+          </Router>
+        </SmoothScroll>
+      </MotionConfig>
     </LanguageProvider>
   );
 }

@@ -1,454 +1,347 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiArrowRight, HiArrowUpRight, HiArrowUp } from 'react-icons/hi2';
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../translations/translations';
-import NeuralBackground from '../components/NeuralBackground';
-import Project1 from '../assets/project1/Project1.png?url';
-import Project2 from '../assets/project2/Project2.PNG?url';
-import Project3 from '../assets/project3/Main.PNG?url';
+import {
+  HiArrowRight, HiArrowUpRight, HiArrowUp, HiPlus,
+  HiOutlineChatBubbleLeftRight, HiOutlinePresentationChartLine, HiOutlineBolt, HiOutlineKey,
+} from 'react-icons/hi2';
+import { useT } from '../contexts/LanguageContext';
+import { useScrollTo } from '../components/SmoothScroll';
+import { Reveal, SectionHeader, LiveDot, EASE } from '../components/ui';
+import HeroVisual from '../components/HeroVisual';
+import { PROJECTS, MARQUEE, SERVICES } from '../data/site';
+import { ProjectRow, CtaBlock } from '../components/Sections';
 
-/* ── animation variants ─────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 48 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 },
-  }),
-};
-
-const fadeIn = {
-  hidden: { opacity: 0 },
-  show: (i = 0) => ({
-    opacity: 1,
-    transition: { duration: 0.7, delay: i * 0.1 },
-  }),
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.93 },
-  show: (i = 0) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 },
-  }),
-};
-
-/* ── what we build data ─────────────────────────────────── */
-const SERVICES = [
-  {
-    icon: '◈',
-    gradient: 'from-[#38bdf8] to-[#22d3ee]',
-    title: { en: 'Business Websites', ru: 'Бизнес-сайты', az: 'Biznes saytları' },
-    desc: {
-      en: 'Fast, beautifully designed sites that represent your brand and convert visitors into clients.',
-      ru: 'Быстрые сайты, которые отражают ваш бренд и превращают посетителей в клиентов.',
-      az: 'Brendinizi əks etdirən və ziyarətçiləri müştəriyə çevirən sürətli, gözəl saytlar.',
-    },
-  },
-  {
-    icon: '⬡',
-    gradient: 'from-[#a78bfa] to-[#f472b6]',
-    title: { en: 'Web Applications', ru: 'Веб-приложения', az: 'Veb tətbiqlər' },
-    desc: {
-      en: 'Custom portals, dashboards, booking systems and tools that automate your operations.',
-      ru: 'Кастомные порталы, дашборды, системы бронирования для автоматизации операций.',
-      az: 'Əməliyyatlarınızı avtomatlaşdıran xüsusi portallar, idarə panelləri, bron sistemləri.',
-    },
-  },
-  {
-    icon: '◎',
-    gradient: 'from-[#22d3ee] to-[#4ade80]',
-    title: { en: 'E‑Commerce Stores', ru: 'Интернет-магазины', az: 'Onlayn mağazalar' },
-    desc: {
-      en: 'Online stores with smooth checkout, inventory management and integrations to grow sales.',
-      ru: 'Интернет-магазины с удобной оплатой, управлением товарами и интеграциями.',
-      az: 'Rahat ödəniş, məhsul idarəetməsi və satışı artıran inteqrasiyalarla onlayn mağazalar.',
-    },
-  },
-  {
-    icon: '◐',
-    gradient: 'from-[#4ade80] to-[#38bdf8]',
-    title: { en: 'Landing Pages', ru: 'Лендинги', az: 'Landing səhifələr' },
-    desc: {
-      en: 'High-impact single pages for campaigns, product launches and lead generation.',
-      ru: 'Высококонверсионные страницы для кампаний, запуска продуктов и лидогенерации.',
-      az: 'Kampaniyalar, məhsul buraxılışları və müştəri toplama üçün yüksək etkili səhifələr.',
-    },
-  },
-  {
-    icon: '⬢',
-    gradient: 'from-[#f472b6] to-[#a78bfa]',
-    title: { en: 'Brand Experiences', ru: 'Бренд-опыт', az: 'Brend təcrübəsi' },
-    desc: {
-      en: 'Visual identity, storytelling and interactive experiences that make your brand memorable.',
-      ru: 'Визуальная идентичность и интерактивные переживания, делающие ваш бренд незабываемым.',
-      az: 'Brendinizi yadda qalan edən vizual kimlik, hekayə anlatma və interaktiv təcrübələr.',
-    },
-  },
-  {
-    icon: '◉',
-    gradient: 'from-[#38bdf8] to-[#a78bfa]',
-    title: { en: 'Content Management', ru: 'Управление контентом', az: 'Məzmun idarəetməsi' },
-    desc: {
-      en: 'Easy-to-edit systems so your team can update text, images and products without a developer.',
-      ru: 'Удобные CMS-решения, чтобы команда могла обновлять контент самостоятельно.',
-      az: 'Komandanızın proqramçısız məzmunu asanca yeniləyə bildiyi idarəetmə sistemləri.',
-    },
-  },
+const WHY_ICONS = [
+  HiOutlineChatBubbleLeftRight,
+  HiOutlinePresentationChartLine,
+  HiOutlineBolt,
+  HiOutlineKey,
 ];
 
-const STATS = [
-  { value: '3+', label: { en: 'Years building', ru: 'Лет опыта', az: 'İllik təcrübə' } },
-  { value: '15+', label: { en: 'Projects shipped', ru: 'Запущено проектов', az: 'Tamamlanan layihə' } },
-  { value: '100%', label: { en: 'Client satisfaction', ru: 'Довольных клиентов', az: 'Müştəri məmnuniyyəti' } },
-  { value: '24h', label: { en: 'Response time', ru: 'Время ответа', az: 'Cavab müddəti' } },
-];
+/* ───────────────────────── Hero ───────────────────────── */
+const Hero = ({ t }) => (
+  <section className="relative overflow-hidden pt-28 sm:pt-36 pb-20 sm:pb-28">
+    <div className="absolute inset-0 bg-grid" aria-hidden="true" />
+    <div
+      className="absolute left-1/2 top-0 h-[560px] w-[1100px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-60 blur-3xl"
+      style={{ background: 'radial-gradient(closest-side, rgba(91,124,250,0.35), rgba(167,139,250,0.12) 60%, transparent)' }}
+      aria-hidden="true"
+    />
 
+    <div className="container-page relative grid items-center gap-16 lg:grid-cols-12">
+      <div className="lg:col-span-6">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          className="inline-flex items-center gap-2.5 rounded-full border border-line bg-white/[0.03] px-3.5 py-1.5 text-sm text-fg-muted"
+        >
+          <LiveDot />
+          {t.home.badge}
+        </motion.p>
 
-const SCROLL_TOP_THRESHOLD = 0.8; // show button after scrolling past ~80% of viewport
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.08 }}
+          className="h-display mt-7 text-[2.6rem] sm:text-6xl xl:text-[4.4rem]"
+        >
+          {t.home.titleA} <span className="text-gradient">{t.home.titleB}</span>
+        </motion.h1>
 
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.16 }}
+          className="mt-6 max-w-xl text-lg leading-relaxed text-fg-muted"
+        >
+          {t.home.description}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.24 }}
+          className="mt-9 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link to="/contact" className="btn-primary group">
+            {t.home.ctaPrimary}
+            <HiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+          <Link to="/work" className="btn-ghost">
+            {t.home.ctaSecondary}
+          </Link>
+        </motion.div>
+
+        <motion.dl
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-14 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-8 sm:grid-cols-4"
+        >
+          {t.home.stats.map((s) => (
+            <div key={s.label}>
+              <dt className="sr-only">{s.label}</dt>
+              <dd className="text-3xl font-semibold tracking-tight text-fg">{s.value}</dd>
+              <dd className="mt-1 text-sm text-fg-subtle">{s.label}</dd>
+            </div>
+          ))}
+        </motion.dl>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
+        className="relative pb-10 lg:col-span-6"
+      >
+        <HeroVisual />
+      </motion.div>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── Tech marquee ───────────────────────── */
+const TechMarquee = ({ t }) => (
+  <section className="border-y border-line py-10" aria-label={t.home.techStrip}>
+    <p className="container-page mb-7 text-center text-sm text-fg-subtle">{t.home.techStrip}</p>
+    <div className="mask-fade-x overflow-hidden">
+      <ul className="flex w-max animate-marquee gap-12 pr-12">
+        {[...MARQUEE, ...MARQUEE].map(({ name, icon: Icon }, i) => (
+          <li
+            key={i}
+            aria-hidden={i >= MARQUEE.length}
+            className="flex items-center gap-2.5 whitespace-nowrap text-fg-subtle"
+          >
+            <Icon className="h-5 w-5" />
+            <span className="text-[15px] font-medium">{name}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── Services ───────────────────────── */
+const Services = ({ t }) => (
+  <section id="services" className="py-24 sm:py-32">
+    <div className="container-page">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <SectionHeader
+          eyebrow={t.home.services.eyebrow}
+          title={t.home.services.title}
+          description={t.home.services.description}
+        />
+        <Reveal>
+          <Link to="/services" className="btn-ghost shrink-0">
+            {t.home.services.all}
+            <HiArrowRight className="h-4 w-4" />
+          </Link>
+        </Reveal>
+      </div>
+
+      <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        {t.home.services.items.map((s, i) => {
+          const { icon: Icon, slug } = SERVICES[i];
+          return (
+            <Reveal key={s.title} delay={(i % 3) * 0.06} className="bg-ink-950">
+              <Link
+                to={`/services#${slug}`}
+                className="group block h-full p-8 transition-colors duration-300 hover:bg-ink-900"
+              >
+                <div className="flex items-start justify-between">
+                  <span className="grid h-12 w-12 place-items-center rounded-xl border border-line bg-white/[0.03] text-accent transition-colors group-hover:border-accent/40">
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  <span className="flex items-center gap-2 font-mono text-xs text-fg-subtle">
+                    {String(i + 1).padStart(2, '0')}
+                    <HiArrowUpRight className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                  </span>
+                </div>
+                <h3 className="mt-8 text-xl font-semibold tracking-tight text-fg">{s.title}</h3>
+                <p className="mt-3 leading-relaxed text-fg-muted">{s.desc}</p>
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {s.tags.map((tag) => (
+                    <li key={tag} className="chip">{tag}</li>
+                  ))}
+                </ul>
+              </Link>
+            </Reveal>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── Work ───────────────────────── */
+const Work = ({ t }) => (
+  <section id="work" className="border-t border-line py-24 sm:py-32">
+    <div className="container-page">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <SectionHeader eyebrow={t.home.work.eyebrow} title={t.home.work.title} description={t.home.work.description} />
+        <Reveal>
+          <Link to="/work" className="btn-ghost shrink-0">
+            {t.home.work.all}
+            <HiArrowRight className="h-4 w-4" />
+          </Link>
+        </Reveal>
+      </div>
+      <div className="mt-16 space-y-24 sm:space-y-32">
+        {PROJECTS.slice(0, 3).map((p, i) => (
+          <ProjectRow key={p.title} project={p} copy={t.projects[i]} index={i} visitLabel={t.common.visitSite} />
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── Process ───────────────────────── */
+const Process = ({ t }) => (
+  <section id="process" className="relative border-t border-line bg-ink-900/40 py-24 sm:py-32">
+    <div className="container-page">
+      <SectionHeader eyebrow={t.home.process.eyebrow} title={t.home.process.title} description={t.home.process.description} />
+      <ol className="relative mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <div
+          className="absolute left-0 right-0 top-[1.4rem] hidden h-px lg:block"
+          style={{ background: 'linear-gradient(90deg, rgba(124,156,255,0.6), rgba(167,139,250,0.4), transparent)' }}
+          aria-hidden="true"
+        />
+        {t.home.process.steps.map((step, i) => (
+          <Reveal as="li" key={step.title} delay={i * 0.08} className="relative">
+            <span className="relative grid h-11 w-11 place-items-center rounded-full border border-accent/40 bg-ink-950 font-mono text-sm text-accent">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <p className="mt-6 font-mono text-xs uppercase tracking-[0.15em] text-fg-subtle">{step.meta}</p>
+            <h3 className="mt-2 text-xl font-semibold tracking-tight text-fg">{step.title}</h3>
+            <p className="mt-3 leading-relaxed text-fg-muted">{step.desc}</p>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── Why us ───────────────────────── */
+const Why = ({ t }) => (
+  <section className="border-t border-line py-24 sm:py-32">
+    <div className="container-page grid gap-14 lg:grid-cols-12">
+      <div className="lg:col-span-4">
+        <div className="lg:sticky lg:top-28">
+          <SectionHeader eyebrow={t.home.why.eyebrow} title={t.home.why.title} />
+        </div>
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2 lg:col-span-8">
+        {t.home.why.items.map((item, i) => {
+          const Icon = WHY_ICONS[i];
+          return (
+            <Reveal key={item.title} delay={(i % 2) * 0.06} className="card p-8">
+              <Icon className="h-7 w-7 text-accent" />
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-fg">{item.title}</h3>
+              <p className="mt-3 leading-relaxed text-fg-muted">{item.desc}</p>
+            </Reveal>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
+
+/* ───────────────────────── FAQ ───────────────────────── */
+const Faq = ({ t }) => {
+  const [open, setOpen] = useState(0);
+  return (
+    <section id="faq" className="border-t border-line py-24 sm:py-32">
+      <div className="container-page grid gap-14 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <SectionHeader eyebrow={t.home.faq.eyebrow} title={t.home.faq.title} />
+        </div>
+        <ul className="divide-y divide-line border-y border-line lg:col-span-8">
+          {t.home.faq.items.map((item, i) => {
+            const isOpen = open === i;
+            return (
+              <li key={item.q}>
+                <h3>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-${i}`}
+                    className="flex w-full items-center justify-between gap-6 py-6 text-left text-lg font-medium text-fg hover:text-accent transition-colors"
+                  >
+                    {item.q}
+                    <HiPlus className={`h-5 w-5 shrink-0 text-fg-subtle transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
+                  </button>
+                </h3>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`faq-${i}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0, transition: { duration: 0.18 } }}
+                      transition={{ duration: 0.3, ease: EASE }}
+                      className="overflow-hidden"
+                    >
+                      <p className="max-w-2xl pb-6 leading-relaxed text-fg-muted">{item.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+};
+
+/* ───────────────────────── Page ───────────────────────── */
 export default function Home() {
-  const { language } = useLanguage();
-  const t = translations[language] || translations.en;
-  const loc = (obj) => (obj && obj[language]) || obj?.en || '';
+  const t = useT();
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const scrollTo = useScrollTo();
 
   useEffect(() => {
-    const checkScroll = () => {
-      const threshold = window.innerHeight * SCROLL_TOP_THRESHOLD;
-      setShowScrollTop(window.scrollY > threshold);
-    };
-    checkScroll();
-    window.addEventListener('scroll', checkScroll, { passive: true });
-    return () => window.removeEventListener('scroll', checkScroll);
+    const onScroll = () => setShowScrollTop(window.scrollY > window.innerHeight);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const projects = [
-    {
-      id: 1,
-      title: 'Danilov',
-      category: { en: 'E‑Commerce', ru: 'Интернет-магазин', az: 'E-ticarət' },
-      tagline: { en: 'Premium footwear store', ru: 'Магазин премиальной обуви', az: 'Premium ayaqqabı mağazası' },
-      image: Project3,
-      url: 'https://danilov.az',
-      accent: '#38bdf8',
-    },
-    {
-      id: 2,
-      title: 'RE:AZ',
-      category: { en: 'Digital Agency', ru: 'Агентство', az: 'Rəqəmsal agentlik' },
-      tagline: { en: 'Modern agency website', ru: 'Сайт цифрового агентства', az: 'Müasir agentlik saytı' },
-      image: Project1,
-      url: 'https://design-az.netlify.app/',
-      accent: '#a78bfa',
-    },
-    {
-      id: 3,
-      title: 'Fresh Garden Quba',
-      category: { en: 'Resort & Booking', ru: 'Курорт', az: 'Kurort' },
-      tagline: { en: 'Resort booking & landing', ru: 'Бронирование курорта', az: 'Kurort bron sistemi' },
-      image: Project2,
-      url: 'https://freshgardenquba.az/',
-      accent: '#4ade80',
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-transparent text-slate-100 overflow-x-hidden">
+    <>
+      <Hero t={t} />
+      <TechMarquee t={t} />
+      <Services t={t} />
+      <Work t={t} />
+      <Process t={t} />
+      <Why t={t} />
+      <Faq t={t} />
+      <CtaBlock
+        title={t.home.cta.title}
+        description={t.home.cta.description}
+        primary={t.home.cta.primary}
+        secondary={t.home.cta.secondary}
+      />
 
-      {/* ══════════════ HERO ══════════════ */}
-      <section data-snap className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-        <NeuralBackground />
-        <div className="absolute inset-0 dot-grid opacity-50 pointer-events-none" />
-        {/* radial glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, rgba(56,189,248,0.4) 0%, transparent 70%)' }} />
-
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-28 pb-20 text-center">
-          {/* badge */}
-          <motion.div
-            variants={fadeIn} initial="hidden" animate="show" custom={0}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded border border-neon-blue/30 bg-neon-blue/5 text-neon-blue text-xs font-mono tracking-widest uppercase mb-8"
-          >
-            <span className="w-1.5 h-1.5 rounded bg-neon-blue animate-pulse" />
-            {t.home.q4Banner}
-          </motion.div>
-
-          {/* headline */}
-          <motion.h1
-            variants={fadeUp} initial="hidden" animate="show" custom={1}
-            className="font-serif text-5xl sm:text-7xl lg:text-8xl font-semibold leading-[1.05] tracking-tight mb-6"
-          >
-            <span className="text-white">{t.home.heroTitle} </span>
-            <span className="text-gradient-blue italic">{t.home.heroTitleHighlight}</span>
-            <span className="text-white"> {t.home.heroTitleEnd}</span>
-          </motion.h1>
-
-          {/* sub */}
-          <motion.p
-            variants={fadeUp} initial="hidden" animate="show" custom={2}
-            className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
-          >
-            {t.home.heroDescription}
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            variants={fadeUp} initial="hidden" animate="show" custom={3}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link
-              to="/contact"
-              className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded font-semibold text-sm text-white transition-all duration-300 hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
-            >
-              {t.home.getStarted}
-              <HiArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="/portfolio"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded border border-white/15 text-slate-300 font-medium text-sm hover:border-neon-blue/50 hover:text-white hover:bg-white/5 transition-all duration-300"
-            >
-              {t.home.viewAllProjects}
-              <HiArrowUpRight className="h-4 w-4" />
-            </Link>
-          </motion.div>
-
-          {/* scroll hint */}
-          <motion.div variants={fadeIn} initial="hidden" animate="show" custom={5}
-            className="mt-16 flex justify-center">
-            <div className="flex flex-col items-center gap-2 text-slate-600">
-              <span className="text-xs font-mono tracking-widest uppercase">Scroll</span>
-              <motion.div
-                className="w-px h-10 bg-gradient-to-b from-slate-600 to-transparent"
-                animate={{ scaleY: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══════════════ STATS ══════════════ */}
-      <section data-snap className="border-y border-brand-border">
-        <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4">
-          {STATS.map((s, i) => (
-            <motion.div
-              key={i}
-              variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }} custom={i}
-              className={`text-center py-4 ${i < 3 ? 'md:border-r border-brand-border' : ''}`}
-            >
-              <p className="text-3xl sm:text-4xl font-serif font-semibold text-gradient-blue mb-1">{s.value}</p>
-              <p className="text-sm text-slate-400">{loc(s.label)}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════ PROJECTS ══════════════ */}
-      <section data-snap className="w-full py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="mb-12">
-            <p className="text-xs font-mono text-neon-blue uppercase tracking-widest mb-3">
-              {t.home.projectsSubline}
-            </p>
-            <h2 className="font-serif text-4xl sm:text-5xl font-semibold text-white">
-              {t.home.projectsMadeWith}
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {projects.map((p, i) => (
-              <motion.div
-                key={p.id}
-                variants={scaleIn} initial="hidden" whileInView="show" viewport={{ once: true }} custom={i}
-              >
-                <motion.a
-                  href={p.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group block rounded overflow-hidden glass glass-hover transition-all duration-300"
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    {/* hover overlay */}
-                    <div className="absolute inset-0 flex items-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ background: 'linear-gradient(to top, rgba(6,10,18,0.85), transparent)' }}>
-                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white">
-                        Visit site <HiArrowUpRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                    {/* accent top-border on hover */}
-                    <div className="absolute inset-x-0 top-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ background: `linear-gradient(90deg, transparent, ${p.accent}, transparent)` }} />
-                  </div>
-                  <div className="p-6">
-                    <span className="text-xs font-mono uppercase tracking-widest block mb-2" style={{ color: p.accent }}>
-                      {loc(p.category)}
-                    </span>
-                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-white mb-1">{p.title}</h3>
-                    <p className="text-sm text-slate-400">{loc(p.tagline)}</p>
-                  </div>
-                </motion.a>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="mt-10 text-center">
-            <Link to="/portfolio"
-              className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-neon-blue transition-colors font-medium">
-              {t.home.viewAllProjects} <HiArrowUpRight className="h-4 w-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══════════════ WHAT WE BUILD ══════════════ */}
-      <section data-snap className="w-full py-24 px-6 border-y border-brand-border">
-        <div className="max-w-6xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
-            <div>
-              <p className="text-xs font-mono text-neon-purple uppercase tracking-widest mb-3">
-                {t.home.coreCompetencies}
-              </p>
-              <h2 className="font-serif text-4xl sm:text-5xl font-semibold text-white">{t.home.techStack}</h2>
-            </div>
-            <p className="text-slate-400 max-w-sm text-sm leading-relaxed">{t.home.engineeringDescription}</p>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {SERVICES.map((svc, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-                custom={i % 3}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="group p-6 rounded glass glass-hover cursor-default h-full flex flex-col"
-              >
-                <div className={`text-3xl mb-4 bg-gradient-to-r ${svc.gradient} bg-clip-text`}
-                  style={{ WebkitTextFillColor: 'transparent' }}>
-                  {svc.icon}
-                </div>
-                <h3 className="font-semibold text-white mb-2 text-lg">{loc(svc.title)}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed flex-1">{loc(svc.desc)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ HOW WE WORK ══════════════ */}
-      <section data-snap className="w-full py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="mb-14">
-            <p className="text-xs font-mono text-neon-cyan uppercase tracking-widest mb-3">
-              {t.home.engineeringExcellence}
-            </p>
-            <h2 className="font-serif text-4xl sm:text-5xl font-semibold text-white">{t.home.techStack}</h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '01', color: '#38bdf8',
-                title: { en: 'Understand & Plan', ru: 'Понять и спланировать', az: 'Anlamaq & Planlamaq' },
-                desc: { en: 'We learn your goals, audience and context before writing a single line of code.', ru: 'Изучаем ваши цели, аудиторию и контекст прежде чем писать код.', az: 'Bir sətir kod yazmadan əvvəl məqsədlərinizi, auditoriyani və konteksti öyrənirik.' },
-              },
-              {
-                step: '02', color: '#a78bfa',
-                title: { en: 'Design & Build', ru: 'Разработать и создать', az: 'Dizayn & İnşa' },
-                desc: { en: 'We design and build in the open — you see real progress at every step.', ru: 'Разрабатываем открыто — вы видите реальный прогресс на каждом этапе.', az: 'Hər addımda real irəliləyişi görürsünüz — açıq şəkildə dizayn edir və qururuq.' },
-              },
-              {
-                step: '03', color: '#4ade80',
-                title: { en: 'Launch & Support', ru: 'Запустить и поддержать', az: 'Buraxılış & Dəstək' },
-                desc: { en: 'We handle the launch and stay available for updates, fixes and improvements.', ru: 'Берём на себя запуск и остаёмся на связи для обновлений и улучшений.', az: 'Buraxılışı biz həll edirik və yeniliklər üçün əlçatan qalırıq.' },
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={i}
-                className="relative p-7 rounded border border-brand-border bg-brand-card/20 backdrop-blur-sm overflow-hidden"
-              >
-                <span className="absolute -top-4 -right-2 font-mono font-bold text-8xl select-none"
-                  style={{ color: item.color, opacity: 0.04 }}>
-                  {item.step}
-                </span>
-                <div className="w-10 h-10 rounded flex items-center justify-center mb-5 font-mono text-xs font-bold"
-                  style={{ background: `${item.color}18`, color: item.color, border: `1px solid ${item.color}30` }}>
-                  {item.step}
-                </div>
-                <h3 className="font-semibold text-white text-lg mb-3">{loc(item.title)}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{loc(item.desc)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ CTA ══════════════ */}
-      <section data-snap className="w-full py-28 px-6 relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-15 rounded pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, rgba(167,139,250,0.7) 0%, transparent 70%)' }} />
-        <motion.div
-          variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-          className="relative z-10 max-w-3xl mx-auto text-center"
-        >
-          <h2 className="font-serif text-4xl sm:text-6xl font-semibold text-white mb-5 leading-tight">
-            {t.home.readyToUpgrade}
-          </h2>
-          <p className="text-slate-400 mb-10 text-lg leading-relaxed">{t.home.upgradeDescription}</p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-9 py-4 rounded text-white font-semibold transition-all duration-300"
-                style={{ background: 'linear-gradient(135deg, #0369a1, #5b21b6)' }}
-              >
-                {t.home.contactLab}
-                <HiArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Scroll to top — bottom right, visible after leaving hero */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
             type="button"
-            aria-label="Scroll to top"
-            onClick={scrollToTop}
+            aria-label={t.common.backToTop}
+            onClick={() => scrollTo(0)}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-50 p-3 rounded-full border border-white/15 bg-brand-surface/90 backdrop-blur-sm text-slate-300 hover:text-white hover:border-neon-blue/50 hover:bg-neon-blue/10 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+            className="fixed bottom-6 right-6 z-40 grid h-12 w-12 place-items-center rounded-full border border-line bg-ink-900/90 text-fg-muted shadow-lg backdrop-blur hover:text-fg hover:border-white/30 transition-colors"
           >
             <HiArrowUp className="h-5 w-5" />
           </motion.button>
         )}
       </AnimatePresence>
-
-    </div>
+    </>
   );
 }

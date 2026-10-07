@@ -7,29 +7,45 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          bg: '#060a12',
-          surface: '#0b1120',
-          card: '#0f1929',
-          border: '#1a2740',
+        ink: {
+          950: '#08090c', // page background
+          900: '#0d0f14', // raised surface
+          850: '#12151c', // card
+          800: '#181c25', // card hover
+          700: '#232836', // border strong
+          600: '#2c3242',
         },
-        neon: {
-          blue: '#38bdf8',
-          purple: '#a78bfa',
-          cyan: '#22d3ee',
-          green: '#4ade80',
-          pink: '#f472b6',
+        line: 'rgba(255,255,255,0.08)',
+        fg: {
+          DEFAULT: '#f4f5f7',
+          muted: '#a1a7b3', // 7.9:1 on ink-950
+          subtle: '#7b8291', // 4.9:1 on ink-950
         },
+        accent: {
+          DEFAULT: '#7c9cff',
+          strong: '#4062e6', // white text 5.2:1
+          violet: '#a78bfa',
+          mint: '#5eead4',
+        },
+        // Legacy aliases used by CaseStudy.jsx
+        brand: { bg: '#08090c', surface: '#0d0f14', card: '#12151c', border: '#232836' },
+        neon: { blue: '#7c9cff', purple: '#a78bfa', cyan: '#5eead4', green: '#5eead4', pink: '#f0abfc' },
       },
       fontFamily: {
-        sans: ['Orbitron', 'system-ui', 'sans-serif'],
-        serif: ['Orbitron', 'system-ui', 'sans-serif'],
-        mono: ['Orbitron', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
-      boxShadow: {
-        neon: '0 0 24px rgba(56,189,248,0.4), 0 0 64px rgba(56,189,248,0.15)',
-        'neon-sm': '0 0 12px rgba(56,189,248,0.35)',
-        'neon-purple': '0 0 24px rgba(167,139,250,0.4)',
+      maxWidth: {
+        page: '78rem',
+      },
+      keyframes: {
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 40s linear infinite',
       },
     },
   },
